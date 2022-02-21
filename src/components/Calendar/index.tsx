@@ -11,11 +11,19 @@ enum ShowType {
   year,
 }
 
-type Props = {
-  dateRangeChanged?: (startTime: number, endTime: number) => void;
+export interface Event {
+  id: number | string;
+  name: string;
+  startDate: Date;
+  endDate: Date;
 }
 
-const Calendar: FunctionComponent<Props> = ({ dateRangeChanged }) => {
+type Props = {
+  dateRangeChanged?: (startTime: number, endTime: number) => void;
+  eventList: Event[];
+}
+
+const Calendar: FunctionComponent<Props> = ({ dateRangeChanged, eventList }) => {
   const [showType, setShowType] = useState(ShowType.week);
   const [dateRange, setDateRange] = useState({
     startDate: resetDate((0 - new Date().getDay()) * 24 * 60 * 60 * 1000),
@@ -61,7 +69,7 @@ const Calendar: FunctionComponent<Props> = ({ dateRangeChanged }) => {
           <Right></Right>
         </span>
       </div>
-      {showType === ShowType.week ? <Week startDate={dateRange.startDate}></Week> : null}
+      {showType === ShowType.week ? <Week startDate={dateRange.startDate} eventList={eventList}></Week> : null}
       <div className="mt-2">
         <EventInfo></EventInfo>
       </div>

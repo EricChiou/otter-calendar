@@ -1,19 +1,22 @@
 import { FunctionComponent } from 'react';
 
+import { Event } from '../index';
+
 import { formatDate } from '@/service/dateFormat';
 
 type Props = {
   startDate: Date;
+  eventList: Event[];
 }
 
-const Week: FunctionComponent<Props> = ({ startDate }) => {
-  function renderEvent() {
+const Week: FunctionComponent<Props> = ({ startDate, eventList }) => {
+  function renderEvent(event: Event) {
     const style = 'm-1 px-1 text-white text-left bg-green-2 truncate cursor-pointer';
     const hoverStyle = 'hover:shadow-md';
     const activeStyle = 'active:shadow-none';
 
     return (
-      <div className={`${style} ${hoverStyle} ${activeStyle}`}>Event</div>
+      <div key={event.id} className={`${style} ${hoverStyle} ${activeStyle}`}>{event.name}</div>
     );
   }
 
@@ -26,8 +29,15 @@ const Week: FunctionComponent<Props> = ({ startDate }) => {
           <br className='sm:hidden'></br>
           &nbsp;{formatDate(date, 'ww')}
         </div>
-        {renderEvent()}
-        {renderEvent()}
+        {eventList.map((event) => {
+          if (
+            event.startDate.getTime() > date.getTime() &&
+            event.endDate.getTime() < date.getTime() + 24 * 60 * 60 * 1000
+          ) {
+            return renderEvent(event);
+          }
+          return null;
+        })}
       </div>
     );
   }

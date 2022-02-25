@@ -1,27 +1,32 @@
 import { FunctionComponent } from 'react';
 
-import { Event } from '../index';
+import { Event } from '../interface';
 
 import { formatDate } from '@/service/dateFormat';
 
 type Props = {
-  startDate: Date;
+  startTime: number;
   eventList: Event[];
+  selected(event: Event): void;
 }
 
-const Week: FunctionComponent<Props> = ({ startDate, eventList }) => {
+const Week: FunctionComponent<Props> = ({ startTime, eventList, selected }) => {
   function renderEvent(event: Event) {
     const style = 'm-1 px-1 text-white text-left bg-green-2 truncate cursor-pointer';
     const hoverStyle = 'hover:shadow-md';
     const activeStyle = 'active:shadow-none';
 
     return (
-      <div key={event.id} className={`${style} ${hoverStyle} ${activeStyle}`}>{event.name}</div>
+      <div
+        key={event.id}
+        className={`${style} ${hoverStyle} ${activeStyle}`}
+        onClick={() => { selected(event); }}
+      >{event.name}</div>
     );
   }
 
   function renderDay(day: number): JSX.Element {
-    const date = new Date(startDate.getTime() + day * 24 * 60 * 60 * 1000);
+    const date = new Date(startTime + day * 24 * 60 * 60 * 1000);
     return (
       <div className="w-[calc((100%-8px)/7)] text-mask-6">
         <div className="font-bold">
@@ -31,8 +36,8 @@ const Week: FunctionComponent<Props> = ({ startDate, eventList }) => {
         </div>
         {eventList.map((event) => {
           if (
-            event.startDate.getTime() > date.getTime() &&
-            event.endDate.getTime() < date.getTime() + 24 * 60 * 60 * 1000
+            event.startTime > date.getTime() &&
+            event.endTime < date.getTime() + 24 * 60 * 60 * 1000
           ) {
             return renderEvent(event);
           }

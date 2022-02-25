@@ -1,47 +1,60 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState, useEffect } from 'react';
+
+import { Event } from './interface';
 
 import { Left, Right } from '@/components/icons';
 import { formatDate } from '@/service/dateFormat';
 import Week from './Week';
-import EventInfo from './EventInfo';
 
-enum ShowType {
+export enum ShowType {
   week,
   month,
   year,
 }
 
-export interface Event {
-  id: number | string;
-  name: string;
-  startDate: Date;
-  endDate: Date;
-}
-
 type Props = {
-  dateRangeChanged?: (startTime: number, endTime: number) => void;
+  showType?: ShowType;
   eventList: Event[];
+  dateRangeChanged?: (startTime: number, endTime: number) => void;
+  selected?(event: Event): void;
 }
 
-const Calendar: FunctionComponent<Props> = ({ dateRangeChanged, eventList }) => {
-  const [showType, setShowType] = useState(ShowType.week);
-  const [dateRange, setDateRange] = useState({
-    startDate: resetDate((0 - new Date().getDay()) * 24 * 60 * 60 * 1000),
-    endDate: resetDate((6 - new Date().getDay()) * 24 * 60 * 60 * 1000),
-  });
+const Calendar: FunctionComponent<Props> = ({
+  showType = ShowType.week,
+  eventList,
+  dateRangeChanged,
+  selected,
+}) => {
+  const [dateRange, setDateRange] = useState({ startTime: 0, endTime: 0 });
 
-  function resetDate(offsetTime: number): Date {
+  useEffect(() => { initDateRange(); }, []);
+
+  function initDateRange() {
     const date = new Date();
-    date.setTime(new Date().getTime() + offsetTime);
+    let newDateRange = { startTime: 0, endTime: 0 };
+
+    if (showType === ShowType.week) {
+      newDateRange = {
+        startTime: resetDate(date, (0 - date.getDay()) * 24 * 60 * 60 * 1000),
+        endTime: resetDate(date, (6 - date.getDay()) * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    setDateRange(newDateRange);
+    if (dateRangeChanged) { dateRangeChanged(newDateRange.startTime, newDateRange.endTime); }
+  }
+
+  function resetDate(date: Date, offsetTime: number): number {
+    date.setTime(date.getTime() + offsetTime);
     date.setHours(0);
     date.setMinutes(0);
     date.setSeconds(0);
     date.setMilliseconds(0);
-    return date;
+    return date.getTime();
   }
 
   function updateDateRange(startTime: number, endTime: number) {
-    setDateRange({ startDate: new Date(startTime), endDate: new Date(endTime) });
+    setDateRange({ startTime, endTime });
     if (dateRangeChanged) { dateRangeChanged(startTime, endTime); }
   }
 
@@ -52,27 +65,30 @@ const Calendar: FunctionComponent<Props> = ({ dateRangeChanged, eventList }) => 
           className="inline-block p-1 align-middle cursor-pointer"
           onClick={() => {
             const offset = -(7 * 24 * 60 * 60 * 1000);
-            updateDateRange(dateRange.startDate.getTime() + offset, dateRange.endDate.getTime() + offset);
+            updateDateRange(dateRange.startTime + offset, dateRange.endTime + offset);
           }}>
           <Left></Left>
         </span>
         <span className="text-xl align-middle">
-          {formatDate(dateRange.startDate, 'yyyy MM/dd')}
+          {formatDate(new Date(dateRange.startTime), 'yyyy MM/dd')}
           <span className="mx-2">-</span>
-          {formatDate(dateRange.endDate, 'MM/dd')}</span>
+          {formatDate(new Date(dateRange.endTime), 'MM/dd')}</span>
         <span
           className="inline-block p-1 align-middle cursor-pointer"
           onClick={() => {
             const offset = 7 * 24 * 60 * 60 * 1000;
-            updateDateRange(dateRange.startDate.getTime() + offset, dateRange.endDate.getTime() + offset);
+            updateDateRange(dateRange.startTime + offset, dateRange.endTime + offset);
           }}>
           <Right></Right>
         </span>
       </div>
-      {showType === ShowType.week ? <Week startDate={dateRange.startDate} eventList={eventList}></Week> : null}
-      <div className="mt-2">
-        <EventInfo></EventInfo>
-      </div>
+      {showType === ShowType.week ?
+        <Week
+          startTime={dateRange.startTime}
+          eventList={eventList}
+          selected={(event) => { if (selected) { selected(event); } }}
+        ></Week> : null
+      }
     </div>
   );
 };

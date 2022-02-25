@@ -1,5 +1,4 @@
-import { EventType, Event } from '@/types/event';
-import { EventResp } from './interface/event';
+import { EventType, EventRepeatUnit, Event } from '@/types/event';
 
 import request from './base';
 import API from '@/constants/api';
@@ -9,20 +8,24 @@ export default class EventAPI {
     return new Promise((resolve, reject) => {
       // mock data
       setTimeout(() => {
-        const mockData = [
+        const mockData: Event[] = [
           {
             id: 0,
             name: '測試事件',
             type: EventType.single,
-            startDate: new Date(),
-            endDate: new Date(new Date().getTime() + 60 * 60 * 1000),
+            startTime: new Date().getTime(),
+            endTime: new Date().getTime() + 60 * 60 * 1000,
           },
           {
             id: 1,
             name: '測試事件2',
-            type: EventType.single,
-            startDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-            endDate: new Date(new Date().getTime() + 25 * 60 * 60 * 999),
+            type: EventType.repeat,
+            repeatUnit: EventRepeatUnit.day,
+            repeatInterval: 1,
+            repeatTime: 0,
+            startTime: new Date().getTime() + 24 * 60 * 60 * 1000,
+            endTime: new Date().getTime() + 25 * 60 * 60 * 999,
+            lastTime: null,
           },
         ];
         resolve(mockData);

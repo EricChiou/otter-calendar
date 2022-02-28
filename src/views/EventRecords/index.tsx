@@ -12,9 +12,15 @@ const EventRecords: FunctionComponent = () => {
         <hr></hr>
         <div className="py-1">
           <div className="text-xl">假事件</div>
-          <div className={eventInfoClass}>最後執行: {formatDate(new Date(), 'yyyy-MM-dd hh:mm')}</div>
-          <div className={eventInfoClass}>下次執行: {formatDate(new Date(new Date().getTime() + 1000000), 'yyyy-MM-dd hh:mm')}</div>
-          <div className={eventInfoClass}><Button text={'已執行'} click={(e) => { console.log(e); }}></Button></div>
+          <div className={eventInfoClass}>
+            最後執行: {formatDate(new Date(), 'yyyy-MM-dd hh:mm')}
+          </div>
+          <div className={eventInfoClass}>
+            下次執行: {formatDate(new Date(new Date().getTime() + 1000000), 'yyyy-MM-dd hh:mm')}
+          </div>
+          <div className={eventInfoClass}>
+            <Button text={'已執行'} click={(e) => { console.log(e); }}></Button>
+          </div>
         </div>
         <hr></hr>
       </div>

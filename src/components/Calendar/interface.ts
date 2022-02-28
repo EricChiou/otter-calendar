@@ -3,4 +3,5 @@ export interface Event {
   name: string;
   startTime: number;
   endTime: number;
+  remark?: string;
 }

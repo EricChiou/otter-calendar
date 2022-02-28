@@ -16,6 +16,7 @@ interface BaseEvent {
   type: EventType;
   startTime: number;
   endTime: number;
+  remark?: string;
 }
 
 interface SingleEvent extends BaseEvent {

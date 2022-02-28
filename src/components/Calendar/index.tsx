@@ -35,8 +35,8 @@ const Calendar: FunctionComponent<Props> = ({
 
     if (showType === ShowType.week) {
       newDateRange = {
-        startTime: resetDate(date, (0 - date.getDay()) * 24 * 60 * 60 * 1000),
-        endTime: resetDate(date, (6 - date.getDay()) * 24 * 60 * 60 * 1000),
+        startTime: resetDate(date, (0 - date.getDay()) * 86400000),
+        endTime: resetDate(date, (6 - date.getDay()) * 86400000),
       };
     }
 
@@ -64,7 +64,7 @@ const Calendar: FunctionComponent<Props> = ({
         <span
           className="inline-block p-1 align-middle cursor-pointer"
           onClick={() => {
-            const offset = -(7 * 24 * 60 * 60 * 1000);
+            const offset = -(7 * 86400000);
             updateDateRange(dateRange.startTime + offset, dateRange.endTime + offset);
           }}>
           <Left></Left>
@@ -76,7 +76,7 @@ const Calendar: FunctionComponent<Props> = ({
         <span
           className="inline-block p-1 align-middle cursor-pointer"
           onClick={() => {
-            const offset = 7 * 24 * 60 * 60 * 1000;
+            const offset = 7 * 86400000;
             updateDateRange(dateRange.startTime + offset, dateRange.endTime + offset);
           }}>
           <Right></Right>

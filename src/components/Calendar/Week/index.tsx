@@ -26,7 +26,7 @@ const Week: FunctionComponent<Props> = ({ startTime, eventList, selected }) => {
   }
 
   function renderDay(day: number): JSX.Element {
-    const date = new Date(startTime + day * 24 * 60 * 60 * 1000);
+    const date = new Date(startTime + day * 86400000);
     return (
       <div className="w-[calc((100%-8px)/7)] text-mask-6">
         <div className="font-bold">
@@ -36,8 +36,8 @@ const Week: FunctionComponent<Props> = ({ startTime, eventList, selected }) => {
         </div>
         {eventList.map((event) => {
           if (
-            event.startTime > date.getTime() &&
-            event.endTime < date.getTime() + 24 * 60 * 60 * 1000
+            event.startTime >= date.getTime() &&
+            event.endTime < date.getTime() + 86400000
           ) {
             return renderEvent(event);
           }

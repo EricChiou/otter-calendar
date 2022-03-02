@@ -1,8 +1,8 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { EventType, EventRepeatUnit, Event } from '@/types/event';
 
-import { formatDate } from '@/service/dateFormat';
+import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
 
 type Props = {
@@ -12,20 +12,15 @@ type Props = {
 const EventInfo: FunctionComponent<Props> = ({ event }) => {
   const [selectedEvent, setSelectedEvent] = useState(event);
 
+  useEffect(() => { setSelectedEvent(event); }, [event]);
+
   function renderEventType(): string {
     switch (selectedEvent.type) {
       case EventType.single:
-        return '單次';
+        return '單次執行';
       case EventType.repeat:
-        return '重複';
+        return '重複執行';
     }
-  }
-
-  function renderEventRepeatInterval(): string {
-    if (selectedEvent.type === EventType.repeat) {
-      return `${selectedEvent.repeatInterval}${renderEventRepeatUnit()}`;
-    }
-    return '';
   }
 
   function renderEventRepeatUnit(): string {
@@ -44,9 +39,12 @@ const EventInfo: FunctionComponent<Props> = ({ event }) => {
     return '';
   }
 
-  function getNextTime(): string {
-    if (selectedEvent.type !== EventType.repeat) { return ''; }
-    if (!selectedEvent.lastTime) { return formatDate(new Date(selectedEvent.startTime), 'yyyy-MM-dd hh:mm'); }
+  function getNextTime(): JSX.Element {
+    if (selectedEvent.type !== EventType.repeat) { return <></>; }
+    if (!selectedEvent.lastTime) {
+      const className = selectedEvent.startTime < new Date().getTime() ? 'text-red' : '';
+      return <span className={className}>{formatDate(new Date(selectedEvent.startTime), 'yyyy-MM-dd hh:mm')}</span>;
+    }
 
     let count = 0;
     let offset = 0;
@@ -72,33 +70,36 @@ const EventInfo: FunctionComponent<Props> = ({ event }) => {
       count++;
 
       if (nextTime > selectedEvent.lastTime) {
-        return formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm');
+        const className = nextTime < new Date().getTime() ? 'text-red' : '';
+        return <span className={className}>{formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm')}</span>;
       }
     }
-    return '';
+    return <></>;
   }
 
-  const infoClassName = 'h-8';
+  const infoClassName = 'h-8 text-lg';
   return (
     <div className="text-left">
-      <span className="text-xl">{selectedEvent.name}</span>
-      <br></br>
-      {formatDate(new Date(selectedEvent.startTime), 'yyyy-MM-dd hh:mm')}
-      <br></br>
+      <span className="text-2xl">{selectedEvent.name}</span>
+      <div className={infoClassName}>
+        {formatDate(new Date(selectedEvent.startTime), 'yyyy-MM-dd hh:mm')}
+      </div>
       <div className={infoClassName}>
         事件類型： {renderEventType()}
       </div>
       {selectedEvent.type === EventType.repeat ? <>
         <div className={infoClassName}>
-          重複間隔： {renderEventRepeatInterval()}
+          重複間隔： {`${selectedEvent.repeatInterval}${renderEventRepeatUnit()}`}
+        </div>
+        <div className={infoClassName}>
+          重複次數： {selectedEvent.repeatTime < 1 ? '永遠重複' : `${selectedEvent.repeatTime}次`}
         </div>
         <div className={infoClassName}>
           最後執行： {selectedEvent.lastTime ? formatDate(new Date(selectedEvent.lastTime), 'yyyy-MM-dd hh:mm') : null}
         </div>
         <div className={infoClassName}>
           下次執行： {getNextTime()}
-        </div>
-        <div className={infoClassName}>
+          &nbsp;
           <Button text={'已執行'} click={() => {
             const newEvent = { ...selectedEvent };
             newEvent.lastTime = new Date().getTime();
@@ -106,6 +107,9 @@ const EventInfo: FunctionComponent<Props> = ({ event }) => {
           }}></Button>
         </div>
       </> : null}
+      <div className={infoClassName}>
+        備註： {selectedEvent.remark}
+      </div>
     </div>
   );
 };

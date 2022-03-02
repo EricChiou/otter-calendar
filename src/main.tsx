@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import './assets/style/common.scss';
-import './assets/style/tailwind.css';
+import './styles/common.scss';
+import './styles/tailwind.css';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 ReactDOM.render(

@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import { Event } from '../interface';
 
-import { formatDate } from '@/service/dateFormat';
+import { formatDate } from '@/utils/dateFormat';
 
 type Props = {
   startTime: number;

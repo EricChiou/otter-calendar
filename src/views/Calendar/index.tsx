@@ -8,11 +8,11 @@ import Calender from '@/components/Calendar';
 import EventInfo from './EventInfo';
 
 const Home: FunctionComponent = () => {
-  const [eventList, setEventList] = useState<CalendarEvent[]>([]);
+  const [eventList, setEventList] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   function parseEvent(eventList: Event[], startTime: number, endTime: number) {
-    const newEventList: CalendarEvent[] = [];
+    const newEventList: Event[] = [];
     eventList.forEach((event) => {
       switch (event.type) {
         case EventType.single:
@@ -22,7 +22,7 @@ const Home: FunctionComponent = () => {
           let count = 0;
           let offset = 0;
           while (event.repeatTime < 1 || count <= event.repeatTime) {
-            const newEvent: CalendarEvent = { ...event };
+            const newEvent: Event = { ...event };
             const date = new Date(event.startTime);
             switch (event.repeatUnit) {
               case EventRepeatUnit.day:
@@ -68,7 +68,10 @@ const Home: FunctionComponent = () => {
         <Calender
           eventList={eventList}
           dateRangeChanged={dateRangeChanged}
-          selected={(event) => { setSelectedEvent(event as Event); }}
+          selected={(event) => {
+            const targetEvent = eventList.find((e) => e.id === event.id);
+            if (targetEvent) { setSelectedEvent(targetEvent); }
+          }}
         ></Calender>
         {selectedEvent ? <EventInfo event={selectedEvent}></EventInfo> : null}
       </div>

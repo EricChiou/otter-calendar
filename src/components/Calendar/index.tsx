@@ -3,7 +3,7 @@ import { FunctionComponent, useState, useEffect } from 'react';
 import { Event } from './interface';
 
 import { Left, Right } from '@/components/icons';
-import { formatDate } from '@/service/dateFormat';
+import { formatDate } from '@/utils/dateFormat';
 import Week from './Week';
 
 export enum ShowType {
@@ -62,7 +62,7 @@ const Calendar: FunctionComponent<Props> = ({
     <div className="text-center">
       <div>
         <span
-          className="inline-block p-1 align-middle cursor-pointer"
+          className="inline-block p-1 align-middle cursor-pointer hover:bg-mask"
           onClick={() => {
             const offset = -(7 * 86400000);
             updateDateRange(dateRange.startTime + offset, dateRange.endTime + offset);
@@ -74,7 +74,7 @@ const Calendar: FunctionComponent<Props> = ({
           <span className="mx-2">-</span>
           {formatDate(new Date(dateRange.endTime), 'MM/dd')}</span>
         <span
-          className="inline-block p-1 align-middle cursor-pointer"
+          className="inline-block p-1 align-middle cursor-pointer hover:bg-mask"
           onClick={() => {
             const offset = 7 * 86400000;
             updateDateRange(dateRange.startTime + offset, dateRange.endTime + offset);

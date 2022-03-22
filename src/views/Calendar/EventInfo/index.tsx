@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import { EventType, EventRepeatUnit, Event, RepeatEvent } from '@/types/event';
 
-import { formatDate } from '@/service/dateFormat';
+import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
 
 interface Props {
@@ -14,7 +14,7 @@ const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
   function renderEventType(): string {
     switch (event.type) {
       case EventType.single:
-        return '單次';
+        return '單次執行';
       case EventType.repeat:
         return '重複';
     }
@@ -77,7 +77,7 @@ const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
     return '';
   }
 
-  const infoClassName = 'h-8';
+  const infoClassName = 'h-8 text-lg';
   return (
     <div className="text-left">
       <span className="text-xl">{event.name}</span>
@@ -89,7 +89,7 @@ const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
       </div>
       {event.type === EventType.repeat ? <>
         <div className={infoClassName}>
-          重複間隔： {renderEventRepeatInterval()}
+          重複間隔： {`${event.repeatInterval}${renderEventRepeatUnit()}`}
         </div>
         <div className={infoClassName}>
           重複次數： {event.repeatTime < 1 ? '永遠重複' : `${event.repeatTime}次`}
@@ -98,12 +98,15 @@ const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
           最後執行： {event.lastTime ? formatDate(new Date(event.lastTime), 'yyyy-MM-dd hh:mm') : null}
         </div>
         <div className={infoClassName}>
-          下次執行： {getNextTime()}
+          最後執行： {event.lastTime ? formatDate(new Date(event.lastTime), 'yyyy-MM-dd hh:mm') : null}
         </div>
         <div className={infoClassName}>
           <Button text={'已執行'} click={() => { updateEvent(event); }}></Button>
         </div>
       </> : null}
+      <div className={infoClassName}>
+        備註： {event.remark}
+      </div>
     </div>
   );
 };

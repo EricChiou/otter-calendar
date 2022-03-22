@@ -13,14 +13,16 @@ module.exports = {
     },
     colors: {
       // white
-      'white': '#ffffff',
-      'white-2': '#eeeeee',
-      'white-3': '#dddddd',
+      'white': '#fff',
+      'white-2': '#eee',
+      'white-3': '#ddd',
       // light green
       'light-green': '#bbdfc8',
       // green
       'green': '#75cfb8',
       'green-2': '#40b598',
+      // red
+      'red': '#f00',
       // mask
       'mask': 'rgba(0, 0, 0, 0.1)',
       'mask-2': 'rgba(0, 0, 0, 0.2)',

@@ -1,10 +1,9 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 
-import { Event } from './interface';
+import { Event } from '@/types/event';
 
 import { Left, Right } from '@/components/icons';
 import { formatDate } from '@/service/dateFormat';
-import Week from './Week';
 
 export enum ShowType {
   week,
@@ -12,14 +11,14 @@ export enum ShowType {
   year,
 }
 
-type Props = {
+interface Props {
   showType?: ShowType;
   eventList: Event[];
   dateRangeChanged?: (startTime: number, endTime: number) => void;
-  selected?(event: Event): void;
+  selected(event: Event): void;
 }
 
-const Calendar: FunctionComponent<Props> = ({
+const Week: FunctionComponent<Props> = ({
   showType = ShowType.week,
   eventList,
   dateRangeChanged,
@@ -58,6 +57,43 @@ const Calendar: FunctionComponent<Props> = ({
     if (dateRangeChanged) { dateRangeChanged(startTime, endTime); }
   }
 
+  function renderEvent(event: Event) {
+    const style = 'm-1 px-1 text-white text-left bg-green-2 truncate cursor-pointer';
+    const hoverStyle = 'hover:shadow-md';
+    const activeStyle = 'active:shadow-none';
+
+    return (
+      <div
+        key={event.id}
+        className={`${style} ${hoverStyle} ${activeStyle}`}
+        onClick={() => { selected(event); }}
+      >{event.name}</div>
+    );
+  }
+
+  function renderDay(day: number): JSX.Element {
+    const date = new Date(dateRange.startTime + day * 86400000);
+    return (
+      <div className="w-[calc((100%-8px)/7)] text-mask-6">
+        <div className="font-bold">
+          {formatDate(date, 'MM/dd')}
+          <br className='sm:hidden'></br>
+          &nbsp;{formatDate(date, 'ww')}
+        </div>
+        {eventList.map((event) => {
+          if (
+            event.startTime >= date.getTime() &&
+            event.startTime < date.getTime() + 86400000
+          ) {
+            return renderEvent(event);
+          }
+          return null;
+        })}
+      </div>
+    );
+  }
+
+  const divider = <div className="border-r border-mask-3"></div>;
   return (
     <div className="text-center">
       <div>
@@ -83,14 +119,26 @@ const Calendar: FunctionComponent<Props> = ({
         </span>
       </div>
       {showType === ShowType.week ?
-        <Week
-          startTime={dateRange.startTime}
-          eventList={eventList}
-          selected={(event) => { if (selected) { selected(event); } }}
-        ></Week> : null
+        <div className="flex min-h-[15rem]">
+          {divider}
+          {renderDay(0)}
+          {divider}
+          {renderDay(1)}
+          {divider}
+          {renderDay(2)}
+          {divider}
+          {renderDay(3)}
+          {divider}
+          {renderDay(4)}
+          {divider}
+          {renderDay(5)}
+          {divider}
+          {renderDay(6)}
+          {divider}
+        </div> : null
       }
     </div>
   );
 };
 
-export default Calendar;
+export default Week;

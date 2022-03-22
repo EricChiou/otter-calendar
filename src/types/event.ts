@@ -10,20 +10,19 @@ export enum EventRepeatUnit {
   year = 'year',
 }
 
-interface BaseEvent {
+export interface BaseEvent {
   id: number;
   name: string;
   type: EventType;
   startTime: number;
-  endTime: number;
   remark?: string;
 }
 
-interface SingleEvent extends BaseEvent {
+export interface SingleEvent extends BaseEvent {
   type: EventType.single;
 }
 
-interface RepeatEvent extends BaseEvent {
+export interface RepeatEvent extends BaseEvent {
   type: EventType.repeat;
   repeatUnit: EventRepeatUnit;
   repeatInterval: number;

@@ -1,18 +1,17 @@
 import { FunctionComponent, useState } from 'react';
 
-import { Event as CalendarEvent } from '@/components/Calendar/interface';
-import { Event, EventType, EventRepeatUnit } from '@/types/event';
+import { Event, EventType, EventRepeatUnit, RepeatEvent } from '@/types/event';
 
 import EventAPI from '@/api/event';
-import Calender from '@/components/Calendar';
+import Week from './Week';
 import EventInfo from './EventInfo';
 
 const Home: FunctionComponent = () => {
-  const [eventList, setEventList] = useState<CalendarEvent[]>([]);
+  const [eventList, setEventList] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   function parseEvent(eventList: Event[], startTime: number, endTime: number) {
-    const newEventList: CalendarEvent[] = [];
+    const newEventList: Event[] = [];
     eventList.forEach((event) => {
       switch (event.type) {
         case EventType.single:
@@ -22,7 +21,7 @@ const Home: FunctionComponent = () => {
           let count = 0;
           let offset = 0;
           while (event.repeatTime < 1 || count <= event.repeatTime) {
-            const newEvent: CalendarEvent = { ...event };
+            const newEvent: Event = { ...event };
             const date = new Date(event.startTime);
             switch (event.repeatUnit) {
               case EventRepeatUnit.day:
@@ -41,7 +40,6 @@ const Home: FunctionComponent = () => {
                 break;
             }
             newEvent.startTime = newEvent.startTime + offset;
-            newEvent.endTime = newEvent.endTime + offset;
             count++;
 
             if (newEvent.startTime >= startTime) { newEventList.push(newEvent); }
@@ -62,15 +60,21 @@ const Home: FunctionComponent = () => {
       });
   }
 
+  function updateEvent(event: RepeatEvent) {
+    const newEvent: Event = { ...event };
+    newEvent.lastTime = new Date().getTime();
+    setSelectedEvent(newEvent);
+  }
+
   return (
     <>
       <div className="m-2 sm:m-4">
-        <Calender
+        <Week
           eventList={eventList}
           dateRangeChanged={dateRangeChanged}
-          selected={(event) => { setSelectedEvent(event as Event); }}
-        ></Calender>
-        {selectedEvent ? <EventInfo event={selectedEvent}></EventInfo> : null}
+          selected={(event) => { setSelectedEvent(event); }}
+        ></Week>
+        {selectedEvent ? <EventInfo event={selectedEvent} updateEvent={updateEvent}></EventInfo> : null}
       </div>
     </>
   );

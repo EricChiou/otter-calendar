@@ -14,7 +14,6 @@ export default class EventAPI {
             name: '測試事件',
             type: EventType.single,
             startTime: new Date().getTime(),
-            endTime: new Date().getTime() + 2 * 3600000,
           },
           {
             id: 1,
@@ -24,7 +23,6 @@ export default class EventAPI {
             repeatInterval: 2,
             repeatTime: 5,
             startTime: new Date().getTime() + 86400000,
-            endTime: new Date().getTime() + 86400000 + 3600000,
             lastTime: null,
           },
         ];

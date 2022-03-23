@@ -20,13 +20,6 @@ const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
     }
   }
 
-  function renderEventRepeatInterval(): string {
-    if (event.type === EventType.repeat) {
-      return `${event.repeatInterval}${renderEventRepeatUnit()}`;
-    }
-    return '';
-  }
-
   function renderEventRepeatUnit(): string {
     if (event.type === EventType.repeat) {
       switch (event.repeatUnit) {
@@ -98,7 +91,7 @@ const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
           最後執行： {event.lastTime ? formatDate(new Date(event.lastTime), 'yyyy-MM-dd hh:mm') : null}
         </div>
         <div className={infoClassName}>
-          最後執行： {event.lastTime ? formatDate(new Date(event.lastTime), 'yyyy-MM-dd hh:mm') : null}
+          下次執行： {getNextTime()}
         </div>
         <div className={infoClassName}>
           <Button text={'已執行'} click={() => { updateEvent(event); }}></Button>

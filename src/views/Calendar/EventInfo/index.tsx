@@ -1,16 +1,17 @@
 import { FunctionComponent } from 'react';
 
-import { EventType, EventRepeatUnit, Event, RepeatEvent } from '@/types/event';
+import { EventType, EventRepeatUnit, Event } from '@/types/event';
 
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
 
 interface Props {
+  originalEvent: Event;
   event: Event;
-  updateEvent(event: RepeatEvent): void;
+  updateEvent(): void;
 }
 
-const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
+const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent }) => {
   function renderEventType(): string {
     switch (event.type) {
       case EventType.single:
@@ -36,38 +37,43 @@ const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
     return '';
   }
 
+  function getLastTime(): string {
+    if (originalEvent.type !== EventType.repeat) { return ''; }
+    return originalEvent.lastTime ? formatDate(new Date(originalEvent.lastTime), 'yyyy-MM-dd hh:mm') : '';
+  }
+
   function getNextTime(): string {
-    if (event.type !== EventType.repeat) { return ''; }
-    if (!event.lastTime) { return formatDate(new Date(event.startTime), 'yyyy-MM-dd hh:mm'); }
+    if (originalEvent.type !== EventType.repeat) { return ''; }
 
-    let count = 0;
-    let offset = 0;
-    while (event.repeatTime < 1 || count <= event.repeatTime) {
-      const date = new Date(event.startTime);
-      switch (event.repeatUnit) {
-        case EventRepeatUnit.day:
-          offset = event.repeatInterval * count * 86400000;
-          break;
-        case EventRepeatUnit.week:
-          offset = event.repeatInterval * count * 7 * 86400000;
-          break;
-        case EventRepeatUnit.month:
-          date.setMonth(date.getMonth() + event.repeatInterval * count);
-          offset = date.getTime() - event.startTime;
-          break;
-        case EventRepeatUnit.year:
-          date.setFullYear(date.getFullYear() + event.repeatInterval * count);
-          offset = date.getTime() - event.startTime;
-          break;
-      }
-      const nextTime = event.startTime + offset;
-      count++;
+    let nextTime = originalEvent.startTime;
+    if (originalEvent.lastTime) {
+      let count = 0, offset = 0;
+      while (originalEvent.repeatTime < 1 || count <= originalEvent.repeatTime) {
+        const date = new Date(originalEvent.startTime);
+        switch (originalEvent.repeatUnit) {
+          case EventRepeatUnit.day:
+            offset = originalEvent.repeatInterval * count * 86400000;
+            break;
+          case EventRepeatUnit.week:
+            offset = originalEvent.repeatInterval * count * 7 * 86400000;
+            break;
+          case EventRepeatUnit.month:
+            date.setMonth(date.getMonth() + originalEvent.repeatInterval * count);
+            offset = date.getTime() - originalEvent.startTime;
+            break;
+          case EventRepeatUnit.year:
+            date.setFullYear(date.getFullYear() + originalEvent.repeatInterval * count);
+            offset = date.getTime() - originalEvent.startTime;
+            break;
+        }
+        nextTime = originalEvent.startTime + offset;
+        count++;
 
-      if (nextTime > event.lastTime) {
-        return formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm');
+        if (nextTime > originalEvent.lastTime) { break; }
       }
     }
-    return '';
+
+    return formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm');
   }
 
   const infoClassName = 'h-8 text-lg';
@@ -88,13 +94,11 @@ const EventInfo: FunctionComponent<Props> = ({ event, updateEvent }) => {
           重複次數： {event.repeatTime < 1 ? '永遠重複' : `${event.repeatTime}次`}
         </div>
         <div className={infoClassName}>
-          最後執行： {event.lastTime ? formatDate(new Date(event.lastTime), 'yyyy-MM-dd hh:mm') : null}
+          最後執行： {getLastTime()}
         </div>
         <div className={infoClassName}>
           下次執行： {getNextTime()}
-        </div>
-        <div className={infoClassName}>
-          <Button text={'已執行'} click={() => { updateEvent(event); }}></Button>
+          <Button text={'已執行'} click={() => { updateEvent(); }}></Button>
         </div>
       </> : null}
       <div className={infoClassName}>

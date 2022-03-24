@@ -1,6 +1,6 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 
-import { Event, EventType, EventRepeatUnit, RepeatEvent } from '@/types/event';
+import { Event, EventType, EventRepeatUnit } from '@/types/event';
 
 import { Left, Right } from '@/components/icons';
 import EventAPI from '@/api/event';

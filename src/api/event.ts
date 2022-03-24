@@ -18,6 +18,7 @@ export default class EventAPI {
             name: '測試事件',
             type: EventType.single,
             startTime: date.getTime(),
+            remark: '這是備註。這是備註。這是備註。這是備註。這是備註。',
           },
           {
             id: 1,
@@ -26,8 +27,9 @@ export default class EventAPI {
             repeatUnit: EventRepeatUnit.day,
             repeatInterval: 2,
             repeatTime: 5,
-            startTime: date.getTime() + 86400000,
+            startTime: date.getTime() - 86400000,
             lastTime: null,
+            remark: '這是備註。這是備註。這是備註。這是備註。這是備註。',
           },
         ];
         resolve(mockData);

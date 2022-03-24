@@ -37,13 +37,13 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
     return '';
   }
 
-  function getLastTime(): string {
-    if (originalEvent.type !== EventType.repeat) { return ''; }
-    return originalEvent.lastTime ? formatDate(new Date(originalEvent.lastTime), 'yyyy-MM-dd hh:mm') : '';
+  function getLastTime(): JSX.Element {
+    if (originalEvent.type !== EventType.repeat) { return <></>; }
+    return <>{originalEvent.lastTime ? formatDate(new Date(originalEvent.lastTime), 'yyyy-MM-dd hh:mm') : ''}</>;
   }
 
-  function getNextTime(): string {
-    if (originalEvent.type !== EventType.repeat) { return ''; }
+  function getNextTime(): JSX.Element {
+    if (originalEvent.type !== EventType.repeat) { return <></>; }
 
     let nextTime = originalEvent.startTime;
     if (originalEvent.lastTime) {
@@ -72,8 +72,8 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
         if (nextTime > originalEvent.lastTime) { break; }
       }
     }
-
-    return formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm');
+    const nextTimeStr = formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm');
+    return nextTime < new Date().getTime() ? <span className="text-red">{nextTimeStr}</span> : <>{nextTimeStr}</>;
   }
 
   const infoClassName = 'h-8 text-lg';
@@ -97,7 +97,7 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
           最後執行： {getLastTime()}
         </div>
         <div className={infoClassName}>
-          下次執行： {getNextTime()}
+          下次執行： {getNextTime()}&nbsp;
           <Button text={'已執行'} click={() => { updateEvent(); }}></Button>
         </div>
       </> : null}

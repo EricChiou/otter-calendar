@@ -5,5 +5,6 @@ import Logout from './Logout';
 import Menu from './Menu';
 import Left from './Left';
 import Right from './Right';
+import Setting from './Setting';
 
-export { Calendar, Note, Login, Logout, Menu, Left, Right };
+export { Calendar, Note, Login, Logout, Menu, Left, Right, Setting };

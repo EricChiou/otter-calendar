@@ -6,6 +6,7 @@ import Main from '@/layout/Main';
 
 import Calendar from '@/views/Calendar';
 import EventRecords from '@/views/EventRecords';
+import Setting from '@/views/Setting';
 
 const routes: RouteObject[] = [
   {
@@ -25,6 +26,16 @@ const routes: RouteObject[] = [
       {
         index: true,
         element: <EventRecords></EventRecords>,
+      },
+    ],
+  },
+  {
+    path: Routes.SETTING,
+    element: <Main></Main>,
+    children: [
+      {
+        index: true,
+        element: <Setting></Setting>,
       },
     ],
   },

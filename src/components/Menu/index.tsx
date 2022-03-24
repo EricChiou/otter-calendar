@@ -4,7 +4,7 @@ import c from 'classnames';
 
 import Routes from '@/constants/routes';
 import logo from '@/assets/image/logo.png';
-import { Calendar, Note, Menu } from '@/components/icons';
+import { Calendar, Note, Menu, Setting } from '@/components/icons';
 
 const SideMenu: FunctionComponent = () => {
   const options = [
@@ -17,6 +17,11 @@ const SideMenu: FunctionComponent = () => {
       Icon: Note,
       route: Routes.EVENT_RECORDS,
       text: 'Event Records',
+    },
+    {
+      Icon: Setting,
+      route: Routes.SETTING,
+      text: 'Setting',
     },
   ];
   const location = useLocation();

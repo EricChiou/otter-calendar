@@ -71,7 +71,7 @@ const EventRecords: FunctionComponent = () => {
           </div>
           <div className="my-0.5">
             下次執行: {getNextTime(event)}
-            &nbsp;<Button text={'已執行'} click={(e) => { updateEvent(event); }}></Button>
+            &nbsp;<Button text={'已執行'} click={() => { updateEvent(event); }}></Button>
           </div>
           <div className="my-0.5">
             備註： {event.remark}

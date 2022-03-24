@@ -23,6 +23,9 @@ const Calendar: FunctionComponent = () => {
   const [originalEvent, setOriginalEvent] = useState<Event | null>(null);
 
   useEffect(() => { initDateRange(); }, []);
+  useEffect(() => { initDateRange(); }, [showType]);
+  useEffect(() => { updateEventList(); }, [dateRange]);
+
   function initDateRange() {
     const date = new Date();
     const newDateRange = { startTime: 0, endTime: 0 };
@@ -36,9 +39,7 @@ const Calendar: FunctionComponent = () => {
       case ShowType.year:
         break;
     }
-
     setDateRange(newDateRange);
-    dateRangeChanged(newDateRange.startTime, newDateRange.endTime);
   }
 
   function resetDate(date: Date, offsetTime: number): number {
@@ -55,15 +56,14 @@ const Calendar: FunctionComponent = () => {
       startTime: dateRange.startTime + offsetTime,
       endTime: dateRange.endTime + offsetTime,
     });
-    dateRangeChanged(dateRange.startTime + offsetTime, dateRange.endTime + offsetTime);
   }
 
-  function dateRangeChanged(startTime: number, endTime: number) {
-    EventAPI.GET_EVENT_LIST()
+  function updateEventList() {
+    EventAPI.GetEventList()
       .then((eventList) => {
         console.log('event list:', eventList);
         setOriginalEventList(eventList);
-        parseEvent(eventList, startTime, endTime);
+        parseEvent(eventList, dateRange.startTime, dateRange.endTime);
       });
   }
 
@@ -109,9 +109,25 @@ const Calendar: FunctionComponent = () => {
   }
 
   function updateEvent() {
-    if (!originalEvent || originalEvent.type !== EventType.repeat) { return; }
-    originalEvent.lastTime = new Date().getTime();
-    setOriginalEventList([...originalEventList]);
+    if (!originalEvent) { return; }
+    EventAPI.UpdateEventLastTime(originalEvent.id).then(() => {
+      EventAPI.GetEventByID(originalEvent.id).then((r) => {
+        if (event && event.type === EventType.repeat && r.type === EventType.repeat) {
+          setEvent({ ...event, lastTime: r.lastTime });
+        }
+        setOriginalEvent(r);
+
+        originalEventList[originalEventList.findIndex((e) => e.id === r.id)] = r;
+        setOriginalEventList([...originalEventList]);
+
+        eventList.forEach((e) => {
+          if (e.id === r.id && e.type === EventType.repeat && r.type === EventType.repeat) {
+            e.lastTime = r.lastTime;
+          }
+        });
+        setEventList([...eventList]);
+      });
+    });
   }
 
   return (

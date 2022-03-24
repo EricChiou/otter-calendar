@@ -10,7 +10,7 @@ const EventRecords: FunctionComponent = () => {
   const [eventList, setEventList] = useState<Event[]>([]);
 
   useEffect(() => {
-    EventAPI.GET_EVENT_LIST()
+    EventAPI.GetEventList()
       .then((eventList) => {
         console.log('event list:', eventList);
         setEventList(eventList.filter((event) => event.type === EventType.repeat));
@@ -18,9 +18,12 @@ const EventRecords: FunctionComponent = () => {
   }, []);
 
   function updateEvent(event: Event) {
-    if (event.type !== EventType.repeat) { return; }
-    event.lastTime = new Date().getTime();
-    setEventList([...eventList]);
+    EventAPI.UpdateEventLastTime(event.id).then(() => {
+      EventAPI.GetEventByID(event.id).then((newEvent) => {
+        eventList[eventList.findIndex((e) => e.id === newEvent.id)] = newEvent;
+        setEventList([...eventList]);
+      });
+    });
   }
 
   function getNextTime(event: Event): JSX.Element {

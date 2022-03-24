@@ -1,22 +1,18 @@
 import axios, { AxiosError } from 'axios';
 
-import API from '@/constants/api';
-
-function errorHandler(error: AxiosError) {
-  console.log('api error handler:', error);
+function errorHandler(error: AxiosError): Promise<AxiosError> {
+  console.log('api error:', error.toJSON());
+  return Promise.reject(error);
 }
 
 const request = axios.create({
-  baseURL: API.BASE_URL,
+  baseURL: 'https://www.calicomoomoo.com/otter-calendar',
   headers: { 'Content-Type': 'application/json' },
 });
 
 request.interceptors.response.use(
-  (response) => { return response; },
-  (error) => {
-    errorHandler(error);
-    return Promise.reject(error);
-  },
+  (response) => response,
+  (error: AxiosError) => errorHandler(error),
 );
 
 export default request;

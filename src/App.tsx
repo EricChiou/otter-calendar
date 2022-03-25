@@ -1,12 +1,11 @@
 import { FunctionComponent } from 'react';
 import { useRoutes } from 'react-router-dom';
 
-import routes from '@/routes';
+import routes, { InterceptorRouter } from '@/routes';
 
 const App: FunctionComponent = () => {
-  const element = useRoutes(routes);
-
-  return (<>{element}</>);
+  const view = useRoutes(routes);
+  return <InterceptorRouter>{view}</InterceptorRouter>;
 };
 
 export default App;

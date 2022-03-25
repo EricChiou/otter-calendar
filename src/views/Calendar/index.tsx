@@ -22,7 +22,6 @@ const Calendar: FunctionComponent = () => {
   const [event, setEvent] = useState<Event | null>(null);
   const [originalEvent, setOriginalEvent] = useState<Event | null>(null);
 
-  useEffect(() => { initDateRange(); }, []);
   useEffect(() => { initDateRange(); }, [showType]);
   useEffect(() => { updateEventList(); }, [dateRange]);
 
@@ -59,6 +58,7 @@ const Calendar: FunctionComponent = () => {
   }
 
   function updateEventList() {
+    if (!dateRange.startTime || !dateRange.endTime) { return; }
     EventAPI.GetEventList()
       .then((eventList) => {
         console.log('event list:', eventList);

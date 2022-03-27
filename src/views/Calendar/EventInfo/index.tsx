@@ -1,9 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { EventType, EventRepeatUnit, Event } from '@/types/event';
 
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
+import Modal from '@/components/Modal';
 
 interface Props {
   originalEvent: Event;
@@ -12,6 +13,9 @@ interface Props {
 }
 
 const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent }) => {
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+
   function renderEventType(): string {
     switch (event.type) {
       case EventType.single:
@@ -104,7 +108,32 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
       <div className={infoClassName}>
         備註： {event.remark}
       </div>
-    </div>
+      <div className={infoClassName}>
+        <Button text={'修改'}></Button>
+        &nbsp;
+        <Button className="bg-red active:bg-red-2" text={'刪除'} click={() => { setDeleteModal(true); }}></Button>
+      </div>
+      <Modal show={deleteModal} title="刪除事件" close={() => { setDeleteModal(false); }}>
+        <div className="py-2 px-1.5">
+          <div className="text-center">
+            <div className="mb-3">確定刪除 {originalEvent.name}？</div>
+            <Button className="bg-red active:bg-red-2" click={() => { setDeleteModal(false); }}>刪除</Button>
+            &nbsp;
+            <Button className="bg-gray active:bg-red-2" click={() => { setDeleteModal(false); }}>取消</Button>
+          </div>
+        </div>
+      </Modal>
+      <Modal show={deleteModal} title="修改事件" close={() => { setDeleteModal(false); }}>
+        <div className="py-2 px-1.5">
+          <div className="text-center">
+            <div className="mb-3">確定刪除 {originalEvent.name}？</div>
+            <Button className="bg-red active:bg-red-2" click={() => { setDeleteModal(false); }}>修改</Button>
+            &nbsp;
+            <Button click={() => { setDeleteModal(false); }}>取消</Button>
+          </div>
+        </div>
+      </Modal>
+    </div >
   );
 };
 

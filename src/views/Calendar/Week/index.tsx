@@ -16,7 +16,7 @@ const Week: FunctionComponent<Props> = ({
   selected,
 }) => {
   function renderEvent(event: Event) {
-    const style = 'm-1 px-1 text-white text-left bg-green-2 truncate cursor-pointer';
+    const style = 'my-1 mx-0.5 px-1 text-white text-left bg-green-2 truncate cursor-pointer sm:mx-1';
     const hoverStyle = 'hover:shadow-md';
     const activeStyle = 'active:shadow-none';
 

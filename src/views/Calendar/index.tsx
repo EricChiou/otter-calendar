@@ -2,11 +2,12 @@ import { FunctionComponent, useState, useEffect } from 'react';
 
 import { Event, EventType, EventRepeatUnit } from '@/types/event';
 
-import { Left, Right } from '@/components/icons';
+import { Left, Right, Add } from '@/components/icons';
 import EventAPI from '@/api/event';
 import Week from './Week';
 import EventInfo from './EventInfo';
 import { formatDate } from '@/utils/dateFormat';
+import Button from '@/components/Button';
 
 export enum ShowType {
   week,
@@ -131,8 +132,8 @@ const Calendar: FunctionComponent = () => {
   }
 
   return (
-    <div className="m-2 sm:m-4">
-      <div className="text-center">
+    <div className="my-2 mx-0.5 sm:my-4 sm:mx-4">
+      <div className="relative text-center">
         <span
           className="inline-block p-1 align-middle cursor-pointer hover:bg-mask"
           onClick={() => { updateDateRange(-7 * 86400000); }}>
@@ -148,6 +149,9 @@ const Calendar: FunctionComponent = () => {
           onClick={() => { updateDateRange(7 * 86400000); }}>
           <Right></Right>
         </span>
+        <div className="absolute top-0 right-0">
+          <Button className="px-0.5"><Add></Add></Button>
+        </div>
       </div>
       <Week
         dateRange={dateRange}
@@ -158,11 +162,13 @@ const Calendar: FunctionComponent = () => {
         }}
       ></Week>
       {event && originalEvent ?
-        <EventInfo
-          originalEvent={originalEvent}
-          event={event}
-          updateEvent={updateEvent}
-        ></EventInfo> : null
+        <div className="mx-0.5 sm:mx-0">
+          <EventInfo
+            originalEvent={originalEvent}
+            event={event}
+            updateEvent={updateEvent}
+          ></EventInfo>
+        </div> : null
       }
     </div>
   );

@@ -6,5 +6,7 @@ import Menu from './Menu';
 import Left from './Left';
 import Right from './Right';
 import Setting from './Setting';
+import Add from './Add';
+import Close from './Close';
 
-export { Calendar, Note, Login, Logout, Menu, Left, Right, Setting };
+export { Calendar, Note, Login, Logout, Menu, Left, Right, Setting, Add, Close };

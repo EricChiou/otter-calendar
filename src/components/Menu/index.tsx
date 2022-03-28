@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import c from 'classnames';
@@ -6,7 +6,7 @@ import c from 'classnames';
 import Routes from '@/constants/routes';
 import logo from '@/assets/image/logo.png';
 import { Calendar, Note, Menu, Setting, Logout } from '@/components/icons';
-import { setLogin, setPrevPath } from '@/store/user.slice';
+import { logout } from '@/store/user.slice';
 
 const SideMenu: FunctionComponent = () => {
   const dispatch = useDispatch();
@@ -14,26 +14,23 @@ const SideMenu: FunctionComponent = () => {
     {
       Icon: Calendar,
       route: Routes.CALENDAR,
-      text: 'Calendar',
+      text: '行事曆',
     },
     {
       Icon: Note,
       route: Routes.EVENT_RECORDS,
-      text: 'Event Records',
+      text: '事件紀錄',
     },
     {
       Icon: Setting,
       route: Routes.SETTING,
-      text: 'Setting',
+      text: '設定',
     },
     {
       Icon: Logout,
       route: Routes.LOGIN,
-      text: 'Logout',
-      action: () => {
-        dispatch(setPrevPath(''));
-        dispatch(setLogin(false));
-      },
+      text: '登出',
+      action: () => { dispatch(logout()); },
     },
   ];
   const location = useLocation();
@@ -79,7 +76,7 @@ const SideMenu: FunctionComponent = () => {
         </span>
       ))}
       {show ?
-        <div className="absolute top-full right-0 m-0.5 text-white bg-green sm:hidden">
+        <div className="absolute top-full right-0 m-0.5 text-white bg-green sm:hidden z-10">
           {options.map((option) => (
             <div
               key={option.route}

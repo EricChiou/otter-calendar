@@ -1,16 +1,19 @@
-import { FunctionComponent, SyntheticEvent } from 'react';
+import { CSSProperties, FunctionComponent, SyntheticEvent } from 'react';
 
 type Props = {
-  text: string;
+  className?: string;
+  text?: string;
+  style?: CSSProperties;
   click?(e: SyntheticEvent): void;
 }
 
-const Button: FunctionComponent<Props> = ({ text, click }) => {
+const Button: FunctionComponent<Props> = ({ children, className, text, style, click }) => {
   return (
     <button
-      className="py-0.5 px-1 text-white bg-green active:bg-green-2"
+      className={`py-0.5 px-1.5 text-white bg-green active:bg-green-2 ${className}`}
+      style={style}
       onClick={click}
-    >{text}</button>
+    >{text}{children}</button>
   );
 };
 

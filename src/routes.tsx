@@ -27,7 +27,7 @@ export const InterceptorRouter: FunctionComponent = ({ children }) => {
     if (user.login && location.pathname === Routes.LOGIN) {
       navigate(user.prevPath || Routes.CALENDAR, { replace: true });
     }
-  }, [location]);
+  }, [location, user]);
 
   function renderView(): ReactNode {
     if (user.login && location.pathname !== Routes.LOGIN) { return children; }

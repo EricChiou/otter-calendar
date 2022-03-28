@@ -16,11 +16,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setPrevPath: (state, action: PayloadAction<string>) => { state.prevPath = action.payload; },
-    setLogin: (state, action: PayloadAction<boolean>) => { state.login = action.payload; },
+    login: (state) => { state.login = true; },
+    logout: (state) => { state.prevPath = '', state.login = false; },
   },
 });
 
-export const { setPrevPath, setLogin } = userSlice.actions;
+export const { setPrevPath, login, logout } = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
 export const selectLogin = (state: RootState) => state.user.login;
 

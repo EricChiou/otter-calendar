@@ -23,6 +23,7 @@ module.exports = {
       'green-2': '#40b598',
       // red
       'red': '#f00',
+      'red-2': '#d00',
       // mask
       'mask': 'rgba(0, 0, 0, 0.1)',
       'mask-2': 'rgba(0, 0, 0, 0.2)',

@@ -4,7 +4,8 @@ import { EventType, EventRepeatUnit, Event } from '@/types/event';
 
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
-import Modal from '@/components/Modal';
+import DeleteEvent from '@/components/DeleteEvent';
+import EditEvent from '@/components/EditEvent';
 
 interface Props {
   originalEvent: Event;
@@ -109,30 +110,12 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
         備註： {event.remark}
       </div>
       <div className={infoClassName}>
-        <Button text={'修改'}></Button>
+        <Button text={'修改'} click={() => { setEditModal(true); }}></Button>
         &nbsp;
         <Button className="bg-red active:bg-red-2" text={'刪除'} click={() => { setDeleteModal(true); }}></Button>
       </div>
-      <Modal show={deleteModal} title="刪除事件" close={() => { setDeleteModal(false); }}>
-        <div className="py-2 px-1.5">
-          <div className="text-center">
-            <div className="mb-3">確定刪除 {originalEvent.name}？</div>
-            <Button className="bg-red active:bg-red-2" click={() => { setDeleteModal(false); }}>刪除</Button>
-            &nbsp;
-            <Button className="bg-gray active:bg-red-2" click={() => { setDeleteModal(false); }}>取消</Button>
-          </div>
-        </div>
-      </Modal>
-      <Modal show={deleteModal} title="修改事件" close={() => { setDeleteModal(false); }}>
-        <div className="py-2 px-1.5">
-          <div className="text-center">
-            <div className="mb-3">確定刪除 {originalEvent.name}？</div>
-            <Button className="bg-red active:bg-red-2" click={() => { setDeleteModal(false); }}>修改</Button>
-            &nbsp;
-            <Button click={() => { setDeleteModal(false); }}>取消</Button>
-          </div>
-        </div>
-      </Modal>
+      <EditEvent show={editModal} event={originalEvent} close={() => { setEditModal(false); }}></EditEvent>
+      <DeleteEvent show={deleteModal} event={originalEvent} close={() => { setDeleteModal(false); }}></DeleteEvent>
     </div >
   );
 };

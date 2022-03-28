@@ -8,6 +8,7 @@ import Week from './Week';
 import EventInfo from './EventInfo';
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
+import EditEvent from '@/components/EditEvent';
 
 export enum ShowType {
   week,
@@ -16,6 +17,7 @@ export enum ShowType {
 }
 
 const Calendar: FunctionComponent = () => {
+  const [addModal, setAddModal] = useState(false);
   const [showType, setShowType] = useState(ShowType.week);
   const [dateRange, setDateRange] = useState({ startTime: 0, endTime: 0 });
   const [originalEventList, setOriginalEventList] = useState<Event[]>([]);
@@ -131,7 +133,7 @@ const Calendar: FunctionComponent = () => {
     });
   }
 
-  return (
+  return (<>
     <div className="my-2 mx-0.5 sm:my-4 sm:mx-4">
       <div className="relative text-center">
         <span
@@ -150,7 +152,7 @@ const Calendar: FunctionComponent = () => {
           <Right></Right>
         </span>
         <div className="absolute top-0 right-0">
-          <Button className="px-0.5"><Add></Add></Button>
+          <Button className="px-0.5" click={() => { setAddModal(true); }}><Add></Add></Button>
         </div>
       </div>
       <Week
@@ -171,7 +173,8 @@ const Calendar: FunctionComponent = () => {
         </div> : null
       }
     </div>
-  );
+    <EditEvent show={addModal} close={() => { setAddModal(false); }}></EditEvent>
+  </>);
 };
 
 export default Calendar;

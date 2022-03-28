@@ -14,8 +14,8 @@ interface Props {
 }
 
 const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent }) => {
-  const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   function renderEventType(): string {
     switch (event.type) {
@@ -82,7 +82,7 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
   }
 
   const infoClassName = 'h-8 text-lg';
-  return (
+  return (<>
     <div className="text-left">
       <span className="text-xl">{event.name}</span>
       <br></br>
@@ -114,10 +114,10 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
         &nbsp;
         <Button className="bg-red active:bg-red-2" text={'刪除'} click={() => { setDeleteModal(true); }}></Button>
       </div>
-      <EditEvent show={editModal} event={originalEvent} close={() => { setEditModal(false); }}></EditEvent>
-      <DeleteEvent show={deleteModal} event={originalEvent} close={() => { setDeleteModal(false); }}></DeleteEvent>
     </div >
-  );
+    <EditEvent show={editModal} event={originalEvent} close={() => { setEditModal(false); }}></EditEvent>
+    <DeleteEvent show={deleteModal} event={originalEvent} close={() => { setDeleteModal(false); }}></DeleteEvent>
+  </>);
 };
 
 export default EventInfo;

@@ -32,18 +32,35 @@ export default class EventAPI {
   public static GetEventList(eventType?: EventType): Promise<Event[]> {
     return new Promise((resolve, reject) => {
       // mock data
-      setTimeout(() => { resolve(mockData); }, 100);
+      setTimeout(() => {
+        if (eventType) {
+          resolve(mockData.filter((d) => d.type === eventType));
+        } else {
+          resolve(mockData);
+        }
+      }, 100);
       // request.get<Event[]>('/event/list', { params: { eventType } })
       //   .then((response) => { resolve(response.data); })
       //   .catch(() => { reject(); });
     });
   }
 
-  public static UpdateEventLastTime(eventID: number): Promise<APIResponse> {
+  public static UpdateEvent(event: Event): Promise<APIResponse> {
     return new Promise((resolve, reject) => {
       // mock data
       setTimeout(() => {
-        (mockData[1] as RepeatEvent).lastTime = new Date().getTime();
+        const targetEvent = mockData.find((d) => d.id === event.id);
+        if (!targetEvent) { return; }
+        targetEvent.name = event.name;
+        targetEvent.startTime = event.startTime;
+        targetEvent.type = event.type;
+        targetEvent.remark = event.remark;
+        if (targetEvent.type === EventType.repeat && event.type === EventType.repeat) {
+          targetEvent.repeatUnit = event.repeatUnit;
+          targetEvent.repeatInterval = event.repeatInterval;
+          targetEvent.repeatTime = event.repeatTime;
+          targetEvent.lastTime = event.lastTime;
+        }
         resolve({ status: APIResponseStatus.success });
       }, 100);
       // request.put<APIResponse>(`/event/${eventID}`)
@@ -55,7 +72,10 @@ export default class EventAPI {
   public static GetEventByID(eventID: number): Promise<Event> {
     return new Promise((resolve, reject) => {
       // mock data
-      setTimeout(() => { resolve(mockData[1]); }, 100);
+      setTimeout(() => {
+        const event = mockData.find((d) => d.id === eventID);
+        if (event) { resolve(event); }
+      }, 100);
       // request.get<Event>(`/event/${eventID}`)
       //   .then((response) => { resolve(response.data); })
       //   .catch(() => { reject(); });

@@ -1,80 +1,75 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { Event, EventType, EventRepeatUnit } from '@/types/event';
+import { EventType, RepeatEvent } from '@/types/event';
 
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
 import EventAPI from '@/api/event';
+import EditEvent from '@/components/EditEvent';
+import DeleteEvent from '@/components/DeleteEvent';
+import { getEventNextTime } from '@/utils/event';
 
 const EventRecords: FunctionComponent = () => {
-  const [eventList, setEventList] = useState<Event[]>([]);
+  const [addModal, setAddModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [eventList, setEventList] = useState<RepeatEvent[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<RepeatEvent | null>(null);
 
   useEffect(() => {
-    EventAPI.GetEventList()
+    EventAPI.GetEventList(EventType.repeat)
       .then((eventList) => {
         console.log('event list:', eventList);
-        setEventList(eventList.filter((event) => event.type === EventType.repeat));
+        setEventList(eventList as RepeatEvent[]);
       });
   }, []);
 
-  function updateEvent(event: Event) {
-    EventAPI.UpdateEventLastTime(event.id).then(() => {
+  function updateEventLastTime(event: RepeatEvent) {
+    const nextTime = getEventNextTime(event);
+    const newEvent: RepeatEvent = { ...event };
+    newEvent.lastTime = nextTime < new Date().getTime() ? new Date().getTime() : nextTime;
+    EventAPI.UpdateEvent(newEvent).then(() => {
       EventAPI.GetEventByID(event.id).then((newEvent) => {
-        eventList[eventList.findIndex((e) => e.id === newEvent.id)] = newEvent;
+        eventList[eventList.findIndex((e) => e.id === newEvent.id)] = newEvent as RepeatEvent;
         setEventList([...eventList]);
       });
     });
   }
 
-  function getNextTime(event: Event): JSX.Element {
+  function renderNextTime(event: RepeatEvent): JSX.Element {
     if (event.type !== EventType.repeat) { return <></>; }
-
-    let nextTime = event.startTime;
-    if (event.lastTime) {
-      let count = 0, offset = 0;
-      while (event.repeatTime < 1 || count <= event.repeatTime) {
-        const date = new Date(event.startTime);
-        switch (event.repeatUnit) {
-          case EventRepeatUnit.day:
-            offset = event.repeatInterval * count * 86400000;
-            break;
-          case EventRepeatUnit.week:
-            offset = event.repeatInterval * count * 7 * 86400000;
-            break;
-          case EventRepeatUnit.month:
-            date.setMonth(date.getMonth() + event.repeatInterval * count);
-            offset = date.getTime() - event.startTime;
-            break;
-          case EventRepeatUnit.year:
-            date.setFullYear(date.getFullYear() + event.repeatInterval * count);
-            offset = date.getTime() - event.startTime;
-            break;
-        }
-        nextTime = event.startTime + offset;
-        count++;
-
-        if (nextTime > event.lastTime) { break; }
-      }
-    }
-    const nextTimeStr = formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm');
-    return nextTime < new Date().getTime() ? <span className="text-red">{nextTimeStr}</span> : <>{nextTimeStr}</>;
+    const nextTime = getEventNextTime(event);
+    return (
+      <span className={`${nextTime < new Date().getTime() ? 'text-red' : ''}`}>
+        {formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm')}
+      </span>
+    );
   }
 
-  function renderEventRecords(event: Event): JSX.Element {
+  function renderEventRecords(event: RepeatEvent): JSX.Element {
     if (event.type !== EventType.repeat) { return <></>; }
     return (
       <div key={event.id}>
         <div className="py-1">
-          <div className="text-xl">假事件</div>
+          <div className="text-xl">{event.name}</div>
           <div className="my-0.5">
             最後執行: {event.lastTime ? formatDate(new Date(event.lastTime), 'yyyy-MM-dd hh:mm') : ''}
           </div>
           <div className="my-0.5">
-            下次執行: {getNextTime(event)}
-            &nbsp;<Button text={'已執行'} click={() => { updateEvent(event); }}></Button>
+            下次執行: {renderNextTime(event)}
+            &nbsp;<Button text={'已執行'} click={() => { updateEventLastTime(event); }}></Button>
           </div>
           <div className="my-0.5">
             備註： {event.remark}
+          </div>
+          <div className="my-0.5">
+            <Button text={'修改'} click={() => { setEditModal(true); setSelectedEvent(event); }}></Button>
+            &nbsp;
+            <Button
+              className="bg-red active:bg-red-2"
+              text={'刪除'}
+              click={() => { setDeleteModal(true); setSelectedEvent(event); }}
+            ></Button>
           </div>
         </div>
         <hr></hr>
@@ -82,7 +77,7 @@ const EventRecords: FunctionComponent = () => {
     );
   }
 
-  return (
+  return (<>
     <div className="m-2 sm:m-4">
       <div className="text-2xl font-bold">事件執行紀錄</div>
       <div className="my-2">
@@ -90,7 +85,14 @@ const EventRecords: FunctionComponent = () => {
         {eventList.map((event) => renderEventRecords(event))}
       </div>
     </div>
-  );
+    {addModal ? <EditEvent show={addModal} close={() => { setAddModal(false); }}></EditEvent> : null}
+    {editModal && selectedEvent ?
+      <EditEvent show={editModal} event={selectedEvent} close={() => { setEditModal(false); }}></EditEvent> :
+      null}
+    {deleteModal && selectedEvent ?
+      <DeleteEvent show={deleteModal} event={selectedEvent} close={() => { setDeleteModal(false); }}></DeleteEvent> :
+      null}
+  </>);
 };
 
 export default EventRecords;

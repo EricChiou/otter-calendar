@@ -1,6 +1,6 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 
-import { Event, EventType, EventRepeatUnit } from '@/types/event';
+import { Event, EventType, EventRepeatUnit, RepeatEvent } from '@/types/event';
 
 import { Left, Right, Add } from '@/components/icons';
 import EventAPI from '@/api/event';
@@ -111,9 +111,12 @@ const Calendar: FunctionComponent = () => {
     setEventList(newEventList);
   }
 
-  function updateEvent() {
-    if (!originalEvent) { return; }
-    EventAPI.UpdateEventLastTime(originalEvent.id).then(() => {
+  function updateEventLastTime(nextTime: number) {
+    if (!originalEvent || originalEvent.type !== EventType.repeat) { return; }
+
+    const newEvent: RepeatEvent = { ...originalEvent };
+    newEvent.lastTime = nextTime < new Date().getTime() ? new Date().getTime() : nextTime;
+    EventAPI.UpdateEvent(newEvent).then(() => {
       EventAPI.GetEventByID(originalEvent.id).then((r) => {
         if (event && event.type === EventType.repeat && r.type === EventType.repeat) {
           setEvent({ ...event, lastTime: r.lastTime });
@@ -168,12 +171,12 @@ const Calendar: FunctionComponent = () => {
           <EventInfo
             originalEvent={originalEvent}
             event={event}
-            updateEvent={updateEvent}
+            updateEventLastTime={updateEventLastTime}
           ></EventInfo>
         </div> : null
       }
     </div>
-    <EditEvent show={addModal} close={() => { setAddModal(false); }}></EditEvent>
+    {addModal ? <EditEvent show={addModal} close={() => { setAddModal(false); }}></EditEvent> : null}
   </>);
 };
 

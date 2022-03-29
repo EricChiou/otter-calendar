@@ -23,11 +23,11 @@ const Login: FunctionComponent = () => {
         </div>
         <div className="mt-5">
           <span className="inline-block w-12 text-right align-middle">帳號：</span>
-          <input className="px-1 w-62 align-middle border border-mask-5 outline-none"></input>
+          <input className="px-1 w-62 align-middle border border-mask-4 outline-none"></input>
         </div>
         <div className="mt-5">
           <span className="inline-block w-12 text-right">密碼：</span>
-          <input className="px-1 w-62 align-middle border border-mask-5 outline-none" type="password"></input>
+          <input className="px-1 w-62 align-middle border border-mask-4 outline-none" type="password"></input>
         </div>
         <div className="my-4">
           <Button text={'登入'} click={() => { dispatch(login()); }}></Button>

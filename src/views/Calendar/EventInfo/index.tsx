@@ -4,16 +4,17 @@ import { EventType, EventRepeatUnit, Event } from '@/types/event';
 
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
-import DeleteEvent from '@/components/DeleteEvent';
 import EditEvent from '@/components/EditEvent';
+import DeleteEvent from '@/components/DeleteEvent';
+import { getEventNextTime } from '@/utils/event';
 
 interface Props {
   originalEvent: Event;
   event: Event;
-  updateEvent(): void;
+  updateEventLastTime(nextTime: number): void;
 }
 
-const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent }) => {
+const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEventLastTime }) => {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
@@ -42,43 +43,20 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
     return '';
   }
 
-  function getLastTime(): JSX.Element {
+  function renderLastTime(): JSX.Element {
     if (originalEvent.type !== EventType.repeat) { return <></>; }
     return <>{originalEvent.lastTime ? formatDate(new Date(originalEvent.lastTime), 'yyyy-MM-dd hh:mm') : ''}</>;
   }
 
-  function getNextTime(): JSX.Element {
+  function renderNextTime(): JSX.Element {
     if (originalEvent.type !== EventType.repeat) { return <></>; }
 
-    let nextTime = originalEvent.startTime;
-    if (originalEvent.lastTime) {
-      let count = 0, offset = 0;
-      while (originalEvent.repeatTime < 1 || count <= originalEvent.repeatTime) {
-        const date = new Date(originalEvent.startTime);
-        switch (originalEvent.repeatUnit) {
-          case EventRepeatUnit.day:
-            offset = originalEvent.repeatInterval * count * 86400000;
-            break;
-          case EventRepeatUnit.week:
-            offset = originalEvent.repeatInterval * count * 7 * 86400000;
-            break;
-          case EventRepeatUnit.month:
-            date.setMonth(date.getMonth() + originalEvent.repeatInterval * count);
-            offset = date.getTime() - originalEvent.startTime;
-            break;
-          case EventRepeatUnit.year:
-            date.setFullYear(date.getFullYear() + originalEvent.repeatInterval * count);
-            offset = date.getTime() - originalEvent.startTime;
-            break;
-        }
-        nextTime = originalEvent.startTime + offset;
-        count++;
-
-        if (nextTime > originalEvent.lastTime) { break; }
-      }
-    }
-    const nextTimeStr = formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm');
-    return nextTime < new Date().getTime() ? <span className="text-red">{nextTimeStr}</span> : <>{nextTimeStr}</>;
+    const nextTime = getEventNextTime(originalEvent);
+    return (
+      <span className={`${nextTime < new Date().getTime() ? 'text-red' : ''}`}>
+        {formatDate(new Date(nextTime), 'yyyy-MM-dd hh:mm')}
+      </span>
+    );
   }
 
   const infoClassName = 'h-8 text-lg';
@@ -91,7 +69,7 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
       <div className={infoClassName}>
         事件類型： {renderEventType()}
       </div>
-      {event.type === EventType.repeat ? <>
+      {event.type === EventType.repeat && originalEvent.type === EventType.repeat ? <>
         <div className={infoClassName}>
           重複間隔： {`${event.repeatInterval}${renderEventRepeatUnit()}`}
         </div>
@@ -99,11 +77,11 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
           重複次數： {event.repeatTime < 1 ? '永遠重複' : `${event.repeatTime}次`}
         </div>
         <div className={infoClassName}>
-          最後執行： {getLastTime()}
+          最後執行： {renderLastTime()}
         </div>
         <div className={infoClassName}>
-          下次執行： {getNextTime()}&nbsp;
-          <Button text={'已執行'} click={() => { updateEvent(); }}></Button>
+          下次執行： {renderNextTime()}&nbsp;
+          <Button text={'已執行'} click={() => { updateEventLastTime(getEventNextTime(originalEvent)); }}></Button>
         </div>
       </> : null}
       <div className={infoClassName}>
@@ -115,8 +93,12 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
         <Button className="bg-red active:bg-red-2" text={'刪除'} click={() => { setDeleteModal(true); }}></Button>
       </div>
     </div >
-    <EditEvent show={editModal} event={originalEvent} close={() => { setEditModal(false); }}></EditEvent>
-    <DeleteEvent show={deleteModal} event={originalEvent} close={() => { setDeleteModal(false); }}></DeleteEvent>
+    {editModal ?
+      <EditEvent show={editModal} event={originalEvent} close={() => { setEditModal(false); }}></EditEvent> :
+      null}
+    {deleteModal ?
+      <DeleteEvent show={deleteModal} event={originalEvent} close={() => { setDeleteModal(false); }}></DeleteEvent> :
+      null}
   </>);
 };
 

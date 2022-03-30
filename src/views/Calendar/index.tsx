@@ -136,6 +136,21 @@ const Calendar: FunctionComponent = () => {
     });
   }
 
+  function updateEvent(newEvent: Event) {
+    if (!originalEvent || !event) { return; }
+
+    const timeOffset = newEvent.startTime - originalEvent.startTime;
+    EventAPI.UpdateEvent(newEvent).then(() => {
+      EventAPI.GetEventByID(newEvent.id).then((r) => {
+        if (r.id === originalEvent?.id && r.id === event?.id) {
+          setEvent({ ...r, startTime: event.startTime + timeOffset });
+          setOriginalEvent(r);
+        }
+      });
+      updateEventList();
+    });
+  }
+
   return (<>
     <div className="my-2 mx-0.5 sm:my-4 sm:mx-4">
       <div className="relative text-center">
@@ -172,6 +187,7 @@ const Calendar: FunctionComponent = () => {
             originalEvent={originalEvent}
             event={event}
             updateEventLastTime={updateEventLastTime}
+            update={updateEvent}
           ></EventInfo>
         </div> : null
       }

@@ -16,13 +16,15 @@ const EventRecords: FunctionComponent = () => {
   const [eventList, setEventList] = useState<RepeatEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<RepeatEvent | null>(null);
 
-  useEffect(() => {
+  useEffect(() => { getEventList(); }, []);
+
+  function getEventList() {
     EventAPI.GetEventList(EventType.repeat)
       .then((eventList) => {
         console.log('event list:', eventList);
         setEventList(eventList as RepeatEvent[]);
       });
-  }, []);
+  }
 
   function updateEventLastTime(event: RepeatEvent) {
     const nextTime = getEventNextTime(event);
@@ -33,6 +35,12 @@ const EventRecords: FunctionComponent = () => {
         eventList[eventList.findIndex((e) => e.id === newEvent.id)] = newEvent as RepeatEvent;
         setEventList([...eventList]);
       });
+    });
+  }
+
+  function updateEvent(newEvent: RepeatEvent) {
+    EventAPI.UpdateEvent(newEvent).then(() => {
+      getEventList();
     });
   }
 
@@ -87,8 +95,12 @@ const EventRecords: FunctionComponent = () => {
     </div>
     {addModal ? <EditEvent show={addModal} close={() => { setAddModal(false); }}></EditEvent> : null}
     {editModal && selectedEvent ?
-      <EditEvent show={editModal} event={selectedEvent} close={() => { setEditModal(false); }}></EditEvent> :
-      null}
+      <EditEvent
+        show={editModal}
+        event={selectedEvent}
+        close={() => { setEditModal(false); }}
+        update={updateEvent}
+      ></EditEvent> : null}
     {deleteModal && selectedEvent ?
       <DeleteEvent show={deleteModal} event={selectedEvent} close={() => { setDeleteModal(false); }}></DeleteEvent> :
       null}

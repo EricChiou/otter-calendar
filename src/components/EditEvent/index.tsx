@@ -10,9 +10,10 @@ interface Props {
   show: boolean;
   event?: Event
   close(): void;
+  update?(event: Event): void;
 }
 
-const EditEvent: FunctionComponent<Props> = ({ show, event, close }) => {
+const EditEvent: FunctionComponent<Props> = ({ show, event, close, update }) => {
   const [_event, setEvent] = useState<Event>(event ?
     { ...event } :
     {
@@ -64,6 +65,16 @@ const EditEvent: FunctionComponent<Props> = ({ show, event, close }) => {
     let time = Math.floor(Number(e.target.value.split('.')[0]));
     time = time < 0 ? 0 : (time > 999 ? 999 : time);
     setEvent({ ..._event, repeatTime: time });
+  }
+
+  function updateEvent() {
+    if (!update) { return; }
+    update(_event);
+    close();
+  }
+
+  function addEvent() {
+    console.log('add event');
   }
 
   return (
@@ -141,7 +152,7 @@ const EditEvent: FunctionComponent<Props> = ({ show, event, close }) => {
             ></input>
           </div>
           <div className="text-center">
-            <Button click={() => { close(); }}>{event ? '修改' : '新增'}</Button>
+            <Button click={event ? updateEvent : addEvent}>{event ? '修改' : '新增'}</Button>
             &nbsp;
             <Button click={() => { close(); }}>取消</Button>
           </div>

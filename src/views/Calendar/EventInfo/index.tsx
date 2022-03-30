@@ -12,9 +12,10 @@ interface Props {
   originalEvent: Event;
   event: Event;
   updateEventLastTime(nextTime: number): void;
+  update(event: Event): void;
 }
 
-const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEventLastTime }) => {
+const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEventLastTime, update }) => {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
@@ -94,8 +95,12 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
       </div>
     </div >
     {editModal ?
-      <EditEvent show={editModal} event={originalEvent} close={() => { setEditModal(false); }}></EditEvent> :
-      null}
+      <EditEvent
+        show={editModal}
+        event={originalEvent}
+        close={() => { setEditModal(false); }}
+        update={update}
+      ></EditEvent> : null}
     {deleteModal ?
       <DeleteEvent show={deleteModal} event={originalEvent} close={() => { setDeleteModal(false); }}></DeleteEvent> :
       null}

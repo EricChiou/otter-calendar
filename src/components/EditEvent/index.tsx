@@ -11,9 +11,10 @@ interface Props {
   event?: Event
   close(): void;
   update?(event: Event): void;
+  add?(event: Event): void;
 }
 
-const EditEvent: FunctionComponent<Props> = ({ show, event, close, update }) => {
+const EditEvent: FunctionComponent<Props> = ({ show, event, close, update, add }) => {
   const [_event, setEvent] = useState<Event>(event ?
     { ...event } :
     {
@@ -74,7 +75,9 @@ const EditEvent: FunctionComponent<Props> = ({ show, event, close, update }) => 
   }
 
   function addEvent() {
-    console.log('add event');
+    if (!add) { return; }
+    add(_event);
+    close();
   }
 
   return (
@@ -99,7 +102,7 @@ const EditEvent: FunctionComponent<Props> = ({ show, event, close, update }) => 
           </div>
           {_event.type === EventType.repeat ? <>
             <div className="mb-3">
-              重複間隔：
+              執行間隔：
               <input
                 className="pl-1 mr-1 w-14 border border-mask-4 outline-none"
                 type="number" step="1" min="1" max="999"

@@ -45,6 +45,20 @@ export default class EventAPI {
     });
   }
 
+  public static AddEvent(event: Event): Promise<APIResponse> {
+    return new Promise((resolve, reject) => {
+      // mock data
+      setTimeout(() => {
+        event.id = mockData.length;
+        mockData.push(event);
+        resolve({ status: APIResponseStatus.success });
+      }, 100);
+      // request.put<APIResponse>(`/event/${eventID}`)
+      //   .then((response) => { resolve(response.data); })
+      //   .catch(() => { reject(); });
+    });
+  }
+
   public static UpdateEvent(event: Event): Promise<APIResponse> {
     return new Promise((resolve, reject) => {
       // mock data
@@ -61,6 +75,19 @@ export default class EventAPI {
           targetEvent.repeatTime = event.repeatTime;
           targetEvent.lastTime = event.lastTime;
         }
+        resolve({ status: APIResponseStatus.success });
+      }, 100);
+      // request.put<APIResponse>(`/event/${eventID}`)
+      //   .then((response) => { resolve(response.data); })
+      //   .catch(() => { reject(); });
+    });
+  }
+
+  public static DeleteEvent(eventID: number): Promise<APIResponse> {
+    return new Promise((resolve, reject) => {
+      // mock data
+      setTimeout(() => {
+        mockData.splice(mockData.findIndex((e) => e.id === eventID), 1);
         resolve({ status: APIResponseStatus.success });
       }, 100);
       // request.put<APIResponse>(`/event/${eventID}`)

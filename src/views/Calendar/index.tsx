@@ -136,6 +136,12 @@ const Calendar: FunctionComponent = () => {
     });
   }
 
+  function addEvent(newEvent: Event) {
+    EventAPI.AddEvent(newEvent).then(() => {
+      updateEventList();
+    });
+  }
+
   function updateEvent(newEvent: Event) {
     if (!originalEvent || !event) { return; }
 
@@ -147,6 +153,14 @@ const Calendar: FunctionComponent = () => {
           setOriginalEvent(r);
         }
       });
+      updateEventList();
+    });
+  }
+
+  function deleteEvent(e: Event) {
+    EventAPI.DeleteEvent(e.id).then(() => {
+      setEvent(null);
+      setOriginalEvent(null);
       updateEventList();
     });
   }
@@ -188,11 +202,12 @@ const Calendar: FunctionComponent = () => {
             event={event}
             updateEventLastTime={updateEventLastTime}
             update={updateEvent}
+            del={deleteEvent}
           ></EventInfo>
         </div> : null
       }
     </div>
-    {addModal ? <EditEvent show={addModal} close={() => { setAddModal(false); }}></EditEvent> : null}
+    {addModal ? <EditEvent show={addModal} add={addEvent} close={() => { setAddModal(false); }}></EditEvent> : null}
   </>);
 };
 

@@ -44,6 +44,12 @@ const EventRecords: FunctionComponent = () => {
     });
   }
 
+  function deleteEvent(e: RepeatEvent) {
+    EventAPI.DeleteEvent(e.id).then(() => {
+      getEventList();
+    });
+  }
+
   function renderNextTime(event: RepeatEvent): JSX.Element {
     if (event.type !== EventType.repeat) { return <></>; }
     const nextTime = getEventNextTime(event);
@@ -98,12 +104,16 @@ const EventRecords: FunctionComponent = () => {
       <EditEvent
         show={editModal}
         event={selectedEvent}
-        close={() => { setEditModal(false); }}
         update={updateEvent}
+        close={() => { setEditModal(false); }}
       ></EditEvent> : null}
     {deleteModal && selectedEvent ?
-      <DeleteEvent show={deleteModal} event={selectedEvent} close={() => { setDeleteModal(false); }}></DeleteEvent> :
-      null}
+      <DeleteEvent
+        show={deleteModal}
+        event={selectedEvent}
+        del={deleteEvent}
+        close={() => { setDeleteModal(false); }}
+      ></DeleteEvent> : null}
   </>);
 };
 

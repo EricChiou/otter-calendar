@@ -13,16 +13,17 @@ interface Props {
   event: Event;
   updateEventLastTime(nextTime: number): void;
   update(event: Event): void;
+  del(event: Event): void;
 }
 
-const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEventLastTime, update }) => {
+const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEventLastTime, update, del }) => {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
   function renderEventType(): string {
     switch (event.type) {
       case EventType.single:
-        return '單次執行';
+        return '單次';
       case EventType.repeat:
         return '重複';
     }
@@ -34,7 +35,7 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
         case EventRepeatUnit.day:
           return '天';
         case EventRepeatUnit.week:
-          return '星期';
+          return '周';
         case EventRepeatUnit.month:
           return '月';
         case EventRepeatUnit.year:
@@ -72,7 +73,7 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
       </div>
       {event.type === EventType.repeat && originalEvent.type === EventType.repeat ? <>
         <div className={infoClassName}>
-          重複間隔： {`${event.repeatInterval}${renderEventRepeatUnit()}`}
+          執行間隔： {`${event.repeatInterval}${renderEventRepeatUnit()}`}
         </div>
         <div className={infoClassName}>
           重複次數： {event.repeatTime < 1 ? '永遠重複' : `${event.repeatTime}次`}
@@ -98,12 +99,16 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
       <EditEvent
         show={editModal}
         event={originalEvent}
-        close={() => { setEditModal(false); }}
         update={update}
+        close={() => { setEditModal(false); }}
       ></EditEvent> : null}
     {deleteModal ?
-      <DeleteEvent show={deleteModal} event={originalEvent} close={() => { setDeleteModal(false); }}></DeleteEvent> :
-      null}
+      <DeleteEvent
+        show={deleteModal}
+        event={originalEvent}
+        del={del}
+        close={() => { setDeleteModal(false); }}
+      ></DeleteEvent> : null}
   </>);
 };
 

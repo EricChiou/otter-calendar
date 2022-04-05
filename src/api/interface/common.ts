@@ -1,9 +1,16 @@
 export enum APIResponseStatus {
-  success = 'success',
-  fail = 'fail',
+  Success = 'success',
+  Error = 'error',
+  FormatError = 'formatError',
+  TokenError = 'tokenError',
+  PermissionError = 'permissionError',
+  OperationError = 'operationError',
+  ServerError = 'serverError',
 }
 
-export interface APIResponse {
+export interface APIResponse<D = unknown> {
   status: APIResponseStatus;
+  result?: D;
   message?: string;
+  trace?: string;
 }

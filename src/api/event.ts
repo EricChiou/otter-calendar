@@ -1,7 +1,7 @@
 import { APIResponse, APIResponseStatus } from './interface/common';
-import { EventType, EventRepeatUnit, Event, RepeatEvent } from '@/types/event';
+import { EventType, EventRepeatUnit, Event } from '@/types/event';
 
-import request from './base';
+// import request from './base';
 
 const date = new Date();
 date.setMinutes(0);
@@ -51,7 +51,7 @@ export default class EventAPI {
       setTimeout(() => {
         event.id = mockData.length;
         mockData.push(event);
-        resolve({ status: APIResponseStatus.success });
+        resolve({ status: APIResponseStatus.Success });
       }, 100);
       // request.put<APIResponse>(`/event/${eventID}`)
       //   .then((response) => { resolve(response.data); })
@@ -75,7 +75,7 @@ export default class EventAPI {
           targetEvent.repeatTime = event.repeatTime;
           targetEvent.lastTime = event.lastTime;
         }
-        resolve({ status: APIResponseStatus.success });
+        resolve({ status: APIResponseStatus.Success });
       }, 100);
       // request.put<APIResponse>(`/event/${eventID}`)
       //   .then((response) => { resolve(response.data); })
@@ -88,7 +88,7 @@ export default class EventAPI {
       // mock data
       setTimeout(() => {
         mockData.splice(mockData.findIndex((e) => e.id === eventID), 1);
-        resolve({ status: APIResponseStatus.success });
+        resolve({ status: APIResponseStatus.Success });
       }, 100);
       // request.put<APIResponse>(`/event/${eventID}`)
       //   .then((response) => { resolve(response.data); })

@@ -19,10 +19,10 @@ const EventRecords: FunctionComponent = () => {
   useEffect(() => { getEventList(); }, []);
 
   function getEventList() {
-    EventAPI.GetEventList(EventType.repeat)
-      .then((eventList) => {
-        console.log('event list:', eventList);
-        setEventList(eventList as RepeatEvent[]);
+    EventAPI.GetEventList()
+      .then((r) => {
+        const eventList = r.filter((event) => event.type === EventType.repeat) as RepeatEvent[];
+        setEventList(eventList);
       });
   }
 

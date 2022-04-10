@@ -64,7 +64,6 @@ const Calendar: FunctionComponent = () => {
     if (!dateRange.startTime || !dateRange.endTime) { return; }
     EventAPI.GetEventList()
       .then((eventList) => {
-        console.log('event list:', eventList);
         setOriginalEventList(eventList);
         parseEvent(eventList, dateRange.startTime, dateRange.endTime);
       });

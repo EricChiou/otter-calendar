@@ -7,8 +7,10 @@ import Message, { MessageType } from '@/components/Message';
 import { logout } from '@/store/user.slice';
 
 let dispatch: Dispatch | null = null;
+let token = '';
 
 export function injectDispatch(d: Dispatch) { dispatch = d; }
+export function injectToken(t: string) { token = t; }
 
 function errorHandler(error: AxiosError): Promise<AxiosError> {
   if (error.response && error.response.data) {
@@ -28,9 +30,19 @@ const request = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+request.interceptors.request.use(
+  (config) => {
+    if (token) {
+      config.headers = { Authorization: `Bearer ${token}` };
+    }
+    return config;
+  },
+);
+
 request.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => errorHandler(error),
 );
+
 
 export default request;

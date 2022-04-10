@@ -1,8 +1,8 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './index';
 
+import { injectToken } from '@/api/base';
 import UserAPI from '@/api/user';
-import Message from '@/components/Message';
 import Cookie from '@/utils/cookie';
 import CookieKeys from '@/constants/cookie';
 
@@ -24,6 +24,7 @@ const userSlice = createSlice({
   reducers: {
     setPrevPath: (state, action: PayloadAction<string>) => { state.prevPath = action.payload; },
     setToken: (state, action: PayloadAction<string>) => {
+      injectToken(action.payload);
       state.token = action.payload;
       state.login = true;
     },

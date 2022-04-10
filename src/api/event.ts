@@ -1,7 +1,7 @@
 import { APIResponse, APIResponseStatus } from './interface/common';
 import { EventType, EventRepeatUnit, Event } from '@/types/event';
 
-// import request from './base';
+import request from './base';
 
 const date = new Date();
 date.setMinutes(0);
@@ -29,33 +29,19 @@ const mockData: Event[] = [
 ];
 
 export default class EventAPI {
-  public static GetEventList(eventType?: EventType): Promise<Event[]> {
+  public static GetEventList(): Promise<Event[]> {
     return new Promise((resolve, reject) => {
-      // mock data
-      setTimeout(() => {
-        if (eventType) {
-          resolve(mockData.filter((d) => d.type === eventType));
-        } else {
-          resolve(mockData);
-        }
-      }, 100);
-      // request.get<Event[]>('/event/list', { params: { eventType } })
-      //   .then((response) => { resolve(response.data); })
-      //   .catch(() => { reject(); });
+      request.get<APIResponse<Event[]>>('/event')
+        .then((response) => { if (response.data.result) { resolve(response.data.result); } })
+        .catch(() => { reject(); });
     });
   }
 
   public static AddEvent(event: Event): Promise<APIResponse> {
     return new Promise((resolve, reject) => {
-      // mock data
-      setTimeout(() => {
-        event.id = mockData.length;
-        mockData.push(event);
-        resolve({ status: APIResponseStatus.Success });
-      }, 100);
-      // request.put<APIResponse>(`/event/${eventID}`)
-      //   .then((response) => { resolve(response.data); })
-      //   .catch(() => { reject(); });
+      request.post<APIResponse>('/event/add', event)
+        .then((response) => { resolve(response.data); })
+        .catch(() => { reject(); });
     });
   }
 

@@ -26,7 +26,7 @@ function errorHandler(error: AxiosError): Promise<AxiosError> {
 }
 
 const request = axios.create({
-  baseURL: import.meta.env.DEV ? 'http://127.0.0.1:7000' : 'https://www.calicomoomoo.com/otter-calendar',
+  baseURL: import.meta.env.DEV ? 'http://127.0.0.1:7000' : 'https://www.calicomoomoo.com/otter-calendar-ws',
   headers: { 'Content-Type': 'application/json' },
 });
 

@@ -1,17 +1,7 @@
-import { FunctionComponent, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { selectUser, logout } from '@/store/user.slice';
+import { FunctionComponent } from 'react';
 import Button from '@/components/Button';
 
 const Setting: FunctionComponent = () => {
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-
-  useEffect(() => {
-    if (!user.login) { dispatch(logout()); }
-  }, []);
-
   return (
     <div className="m-2 sm:m-4">
       <div className="text-2xl font-bold">設定</div>

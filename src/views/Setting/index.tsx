@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'React';
+import { FunctionComponent } from 'react';
 
 import Button from '@/components/Button';
 

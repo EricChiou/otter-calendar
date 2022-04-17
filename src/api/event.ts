@@ -1,5 +1,5 @@
 import { APIResponse } from './interface/common';
-import { Event } from '@/types/event';
+import { Event, EventType } from '@/types/event';
 
 import request from './base';
 
@@ -14,7 +14,18 @@ export default class EventAPI {
   public static GetEventList(): Promise<Event[]> {
     return new Promise((resolve, reject) => {
       request.get<APIResponse<Event[]>>(this.PRE_URL)
-        .then((response) => { if (response.data.result) { resolve(response.data.result); } })
+        .then((response) => {
+          if (response.data.result) {
+            resolve(response.data.result.map((e) => {
+              switch (e.type) {
+                case EventType.single:
+                  return e;
+                case EventType.repeat:
+                  return { ...e, repeatTime: e.repeatTime || 0 };
+              }
+            }));
+          }
+        })
         .catch(() => { reject(); });
     });
   }
@@ -22,7 +33,19 @@ export default class EventAPI {
   public static GetEventByID(eventID: number): Promise<Event> {
     return new Promise((resolve, reject) => {
       request.get<APIResponse<Event>>(`/event/${eventID}`)
-        .then((response) => { if (response.data.result) { resolve(response.data.result); } })
+        .then((response) => {
+          if (response.data.result) {
+            const e = response.data.result;
+            switch (e.type) {
+              case EventType.single:
+                resolve(e);
+                break;
+              case EventType.repeat:
+                resolve({ ...e, repeatTime: e.repeatTime || 0 });
+                break;
+            }
+          }
+        })
         .catch(() => { reject(); });
     });
   }

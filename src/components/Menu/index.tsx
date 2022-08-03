@@ -46,14 +46,14 @@ const SideMenu: FunctionComponent<Props> = ({ footer }) => {
         <span key={option.route} className="float-left w-[25%] h-12">
           <div
             className={c(
-              'p-2 text-center cursor-pointer hover:bg-mask active:bg-mask-2',
+              'h-full text-center cursor-pointer hover:bg-mask active:bg-mask-2',
               { 'bg-mask': location.pathname === option.route },
             )}
             onClick={() => {
               if (option.action) { option.action(); }
               navigate(option.route);
             }}>
-            <option.Icon className="inline-block w-6 h-6 text-white opacity-85"></option.Icon>
+            <option.Icon className="inline-block my-3 w-6 h-6 text-white opacity-85"></option.Icon>
           </div>
         </span>
       ))}

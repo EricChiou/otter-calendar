@@ -96,7 +96,10 @@ const EventRecords: FunctionComponent = () => {
       <div className="text-2xl font-bold">事件執行紀錄</div>
       <div className="my-2">
         <hr></hr>
-        {eventList.map((event) => renderEventRecords(event))}
+        {eventList
+          .sort((event, preEvent) => getEventNextTime(event) < getEventNextTime(preEvent) ? -1 : 1)
+          .map((event) => renderEventRecords(event))
+        }
       </div>
     </div>
     {addModal ? <EditEvent show={addModal} close={() => { setAddModal(false); }}></EditEvent> : null}

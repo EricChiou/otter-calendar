@@ -6,7 +6,7 @@ import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
 import EditEvent from '@/components/EditEvent';
 import DeleteEvent from '@/components/DeleteEvent';
-import { getEventNextTime } from '@/utils/event';
+import { getEventNextTime } from '@/services/event';
 
 interface Props {
   originalEvent: Event;

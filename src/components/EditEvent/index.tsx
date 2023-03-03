@@ -1,6 +1,14 @@
 import { ChangeEvent, FunctionComponent, useState } from 'react';
 
-import { Event, EventType, eventTypes, EventRepeatUnit, eventRepeatUnits } from '@/types/event';
+import {
+  Event,
+  EventType,
+  eventTypes,
+  EventRepeatUnit,
+  eventRepeatUnits,
+  EventCalType,
+  eventCalTypes,
+} from '@/types/event';
 
 import Modal from '@/components/Modal';
 import Button from '@/components/Button';
@@ -40,11 +48,33 @@ const EditEvent: FunctionComponent<Props> = ({ show, event, close, update, add }
         setEvent({
           ..._event,
           type: EventType.repeat,
+          calType: EventCalType.byStart,
           repeatInterval: 1,
           repeatUnit: EventRepeatUnit.day,
           repeatTime: 1,
           lastTime: null,
         });
+        break;
+    }
+  }
+
+  function eventCalTypeOnChange(e: ChangeEvent<HTMLSelectElement>) {
+    switch (e.target.value) {
+      case EventCalType.byStart:
+        if (_event.type === EventType.repeat) {
+          setEvent({
+            ..._event,
+            calType: EventCalType.byStart,
+          });
+        }
+        break;
+      case EventCalType.byLast:
+        if (_event.type === EventType.repeat) {
+          setEvent({
+            ..._event,
+            calType: EventCalType.byLast,
+          });
+        }
         break;
     }
   }
@@ -116,6 +146,18 @@ const EditEvent: FunctionComponent<Props> = ({ show, event, close, update, add }
               >
                 {eventRepeatUnits.map((eventRepeatUnit) => (
                   <option key={eventRepeatUnit.value} value={eventRepeatUnit.value}>{eventRepeatUnit.label}</option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-3">
+              計算方式：
+              <select
+                className="border border-mask-4 outline-none"
+                value={_event.calType}
+                onChange={eventCalTypeOnChange}
+              >
+                {eventCalTypes.map((eventCalType) => (
+                  <option key={eventCalType.value} value={eventCalType.value}>{eventCalType.label}</option>
                 ))}
               </select>
             </div>

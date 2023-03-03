@@ -26,15 +26,13 @@ function errorHandler(error: AxiosError): Promise<AxiosError> {
 }
 
 const request = axios.create({
-  baseURL: import.meta.env.DEV ? 'http://127.0.0.1:7000' : 'https://www.calicomoomoo.com/otter-calendar-ws',
+  baseURL: import.meta.env.DEV ? 'https://www.calicomoomoo.com/otter-calendar-ws' : 'https://www.calicomoomoo.com/otter-calendar-ws',
   headers: { 'Content-Type': 'application/json' },
 });
 
 request.interceptors.request.use(
   (config) => {
-    if (token) {
-      config.headers = { Authorization: `Bearer ${token}` };
-    }
+    if (token) { config.headers.set('Authorization', `Bearer ${token}`); }
     return config;
   },
 );

@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useEffect } from 'react';
+import { FunctionComponent, ReactNode, useEffect, PropsWithChildren } from 'react';
 import { RouteObject, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -13,7 +13,7 @@ import Calendar from '@/views/Calendar';
 import EventRecords from '@/views/EventRecords';
 import Setting from '@/views/Setting';
 
-export const InterceptorRouter: FunctionComponent = ({ children }) => {
+export const InterceptorRouter: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector(selectUser);

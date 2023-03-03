@@ -49,7 +49,7 @@ const Login: FunctionComponent = () => {
       return;
     }
 
-    dispatch(login(account, password));
+    dispatch(login({ account, password }));
   }
 
   return (

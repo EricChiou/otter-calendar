@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 
-import { EventType, EventRepeatUnit, Event } from '@/types/event';
+import { EventType, EventRepeatUnit, Event, EventCalType } from '@/types/event';
 
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
@@ -45,6 +45,18 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
     return '';
   }
 
+  function renderEventCalType(): string {
+    if (event.type === EventType.repeat) {
+      switch (event.calType) {
+        case EventCalType.byStart:
+          return '以事件開始時間計算';
+        case EventCalType.byLast:
+          return '以最後執行時間計算';
+      }
+    }
+    return '';
+  }
+
   function renderLastTime(): JSX.Element {
     if (originalEvent.type !== EventType.repeat) { return <></>; }
     return <>{originalEvent.lastTime ? formatDate(new Date(originalEvent.lastTime), 'yyyy-MM-dd hh:mm') : ''}</>;
@@ -74,6 +86,9 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
       {event.type === EventType.repeat && originalEvent.type === EventType.repeat ? <>
         <div className={infoClassName}>
           執行間隔： {`${event.repeatInterval}${renderEventRepeatUnit()}`}
+        </div>
+        <div className={infoClassName}>
+          計算方式： {renderEventCalType()}
         </div>
         <div className={infoClassName}>
           重複次數： {event.repeatTime < 1 ? '永遠重複' : `${event.repeatTime}次`}

@@ -3,6 +3,11 @@ export enum EventType {
   repeat = 'repeat',
 }
 
+export enum EventCalType {
+  byStart = 'by_start',
+  byLast = 'by_last',
+}
+
 export enum EventRepeatUnit {
   day = 'day',
   week = 'week',
@@ -18,6 +23,17 @@ export const eventTypes: { label: string, value: EventType }[] = [
   {
     label: '重複',
     value: EventType.repeat,
+  },
+];
+
+export const eventCalTypes: { label: string, value: EventCalType }[] = [
+  {
+    label: '以事件開始時間計算',
+    value: EventCalType.byStart,
+  },
+  {
+    label: '以最後執行時間計算',
+    value: EventCalType.byLast,
   },
 ];
 
@@ -54,6 +70,7 @@ export interface SingleEvent extends BaseEvent {
 
 export interface RepeatEvent extends BaseEvent {
   type: EventType.repeat;
+  calType: EventCalType;
   repeatUnit: EventRepeatUnit;
   repeatInterval: number;
   repeatTime: number;

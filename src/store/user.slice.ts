@@ -1,4 +1,4 @@
-import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './index';
 
 import { injectToken } from '@/api/base';
@@ -34,19 +34,18 @@ const userSlice = createSlice({
       state.token = '';
       state.login = false;
     },
+    login: (state, action: PayloadAction<{ account: string, password: string }>) => {
+      UserAPI.Login(action.payload.account, action.payload.password).then((resp) => {
+        const date = new Date();
+        date.setFullYear(2200);
+        Cookie.Set(CookieKeys.TOKEN, resp.token, date);
+        state.token = resp.token;
+      });
+    },
   },
 });
 
-export const login = (account: string, password: string) => (dispatch: Dispatch) => {
-  UserAPI.Login(account, password).then((r) => {
-    const date = new Date();
-    date.setFullYear(2200);
-    Cookie.Set(CookieKeys.TOKEN, r.token, date);
-    dispatch(userSlice.actions.setToken(r.token));
-  });
-};
-
-export const { setPrevPath, setToken, logout } = userSlice.actions;
+export const { setPrevPath, setToken, logout, login } = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
 export const selectLogin = (state: RootState) => state.user.login;
 

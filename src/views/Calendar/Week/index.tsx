@@ -1,8 +1,9 @@
 import { FunctionComponent } from 'react';
 
-import { Event } from '@/types/event';
+import { Event, EventType } from '@/types/event';
 
 import { formatDate } from '@/utils/dateFormat';
+import { getEventNextTime } from '@/services/event';
 
 interface Props {
   dateRange: { startTime: number, endTime: number };
@@ -19,13 +20,17 @@ const Week: FunctionComponent<Props> = ({
     const style = 'my-1 mx-0.5 px-1 text-white text-left bg-green-2 truncate cursor-pointer sm:mx-1';
     const hoverStyle = 'hover:shadow-md';
     const activeStyle = 'active:shadow-none';
+    const nextTime = event.type === EventType.repeat ? getEventNextTime(event) : 0;
 
     return (
       <div
         key={event.id}
         className={`${style} ${hoverStyle} ${activeStyle}`}
         onClick={() => { selected(event); }}
-      >{event.name}</div>
+      >
+        {nextTime && nextTime < new Date().getTime() && <span className="text-red">！</span>}
+        {event.name}
+      </div>
     );
   }
 

@@ -10,15 +10,15 @@ const Setting: FunctionComponent = () => {
         <div className="mt-1 text-xl">修改密碼</div>
         <div className="mt-2">
           <span className="inline-block w-28 text-right">舊密碼：</span>
-          <input className="px-1 w-60 align-middle border border-mask-4 outline-none" type="password"></input>
+          <input className="px-1 w-60 align-middle input" type="password"></input>
         </div>
         <div className="mt-4">
           <span className="inline-block w-28 text-right">新密碼：</span>
-          <input className="px-1 w-60 align-middle border border-mask-4 outline-none" type="password"></input>
+          <input className="px-1 w-60 align-middle input" type="password"></input>
         </div>
         <div className="mt-4">
           <span className="inline-block w-28 text-right">確認新密碼：</span>
-          <input className="px-1 w-60 align-middle border border-mask-4 outline-none" type="password"></input>
+          <input className="px-1 w-60 align-middle input" type="password"></input>
         </div>
         <div className="mt-4 text-center sm:w-[22rem]">
           <Button text="確認修改"></Button>

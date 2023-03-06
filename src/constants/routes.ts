@@ -4,5 +4,6 @@ export default class Routes {
   public static readonly LOGIN = `${this.PRE_PATH}/login`;
   public static readonly CALENDAR = `${this.PRE_PATH}/calendar`;
   public static readonly EVENT_RECORDS = `${this.PRE_PATH}/event-records`;
+  public static readonly FOOD_NOTE = `${this.PRE_PATH}/food-note`;
   public static readonly SETTING = `${this.PRE_PATH}/setting`;
 }

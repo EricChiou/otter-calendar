@@ -11,6 +11,7 @@ import Main from '@/layout/Main';
 import Login from '@/views/Login';
 import Calendar from '@/views/Calendar';
 import EventRecords from '@/views/EventRecords';
+import FoodNote from '@/views/FoodNote';
 import Setting from '@/views/Setting';
 
 export const InterceptorRouter: FunctionComponent<PropsWithChildren> = ({ children }) => {
@@ -60,6 +61,16 @@ const routes: RouteObject[] = [
       {
         index: true,
         element: <EventRecords></EventRecords>,
+      },
+    ],
+  },
+  {
+    path: Routes.FOOD_NOTE,
+    element: <Main></Main>,
+    children: [
+      {
+        index: true,
+        element: <FoodNote></FoodNote>,
       },
     ],
   },

@@ -92,28 +92,28 @@ const EditTime: FunctionComponent<Props> = ({ time, onChange }) => {
 
   return (<>
     <select
-      className="border border-mask-4 outline-none"
+      className="input"
       value={new Date(time).getFullYear()}
       onChange={yearOnChange}
     >{renderYears()}</select>/
     <select
-      className="border border-mask-4 outline-none"
+      className="input"
       value={new Date(time).getMonth()}
       onChange={monthOnChange}
     >{renderMonths()}</select>/
     <select
-      className="border border-mask-4 outline-none"
+      className="input"
       value={new Date(time).getDate()}
       onChange={dateOnChange}
     >{renderDates()}</select>
     <span className="mx-1">-</span>
     <select
-      className="border border-mask-4 outline-none"
+      className="input"
       value={new Date(time).getHours()}
       onChange={hourOnChange}
     >{renderHours()}</select>:
     <select
-      className="border border-mask-4 outline-none"
+      className="input"
       value={new Date(time).getMinutes()}
       onChange={minuteOnChange}
     >{renderMinutes()}</select>

@@ -59,16 +59,16 @@ const SideMenu: FunctionComponent<Props> = ({ footer }) => {
         <span className="ml-1 text-xl font-bold text-white align-middle">Otter Calendar</span>
       </span>
       <span
-        className="absolute top-0 right-0 bottom-0 p-1 text-white cursor-pointer sm:top-auto sm:bottom-0 sm:w-full"
+        className="absolute top-0 right-0 bottom-0 text-white cursor-pointer sm:top-auto sm:bottom-0 sm:p-1 sm:w-full"
         onClick={() => dispatch(logout())}
       >
-        <Logout className="sm:w-full sm:h-full"></Logout>
+        <Logout className="w-full h-full"></Logout>
       </span>
       {options.map((option) => (
-        <span key={option.route} className="hidden sm:block sm:my-1.5">
+        <span key={option.route} className="hidden sm:block">
           <div
             className={c(
-              'inline-block w-full p-0.5 cursor-pointer hover:bg-mask active:bg-mask-2',
+              'inline-block w-full p-1 cursor-pointer hover:bg-mask active:bg-mask-2',
               { 'bg-mask': location.pathname === option.route },
             )}
             onClick={() => navigate(option.route)}

@@ -9,6 +9,7 @@ import EventInfo from './EventInfo';
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
 import EditEvent from '@/components/EditEvent';
+import Title from '@/components/Title';
 
 export enum ShowType {
   week,
@@ -165,7 +166,16 @@ const Calendar: FunctionComponent = () => {
   }
 
   return (<>
-    <div className="my-2 mx-0.5 sm:my-4 sm:mx-4">
+    <Title
+      className="mb-2"
+      title="行事曆"
+      extra={
+        <Button className="my-0.5 px-0.5 sm:hidden" click={() => { setAddModal(true); }}>
+          <Add></Add>
+        </Button>
+      }
+    ></Title>
+    <div className="mb-2">
       <div className="relative text-center">
         <span
           className="inline-block p-1 align-middle cursor-pointer hover:bg-mask"
@@ -182,7 +192,7 @@ const Calendar: FunctionComponent = () => {
           onClick={() => { updateDateRange(7 * 86400000); }}>
           <Right></Right>
         </span>
-        <div className="absolute top-0 right-0">
+        <div className="hidden absolute top-0 right-0 sm:block">
           <Button className="px-0.5" click={() => { setAddModal(true); }}><Add></Add></Button>
         </div>
       </div>
@@ -194,18 +204,18 @@ const Calendar: FunctionComponent = () => {
           setOriginalEvent(originalEventList.find((originalEvent) => originalEvent.id === e.id) || null);
         }}
       ></Week>
-      {event && originalEvent ?
-        <div className="mx-0.5 sm:mx-0">
-          <EventInfo
-            originalEvent={originalEvent}
-            event={event}
-            updateEventLastTime={updateEventLastTime}
-            update={updateEvent}
-            del={deleteEvent}
-          ></EventInfo>
-        </div> : null
-      }
     </div>
+    {event && originalEvent ?
+      <div className="mx-0.5 sm:mx-0">
+        <EventInfo
+          originalEvent={originalEvent}
+          event={event}
+          updateEventLastTime={updateEventLastTime}
+          update={updateEvent}
+          del={deleteEvent}
+        ></EventInfo>
+      </div> : null
+    }
     {addModal ? <EditEvent show={addModal} add={addEvent} close={() => { setAddModal(false); }}></EditEvent> : null}
   </>);
 };

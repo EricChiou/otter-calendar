@@ -1,9 +1,9 @@
 import { FunctionComponent, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import Button from '@/components/Button';
 import { login } from '@/store/user.slice';
 
+import { useDispatch } from '@/store';
 import logo from '@/assets/image/logo.png';
 import bgLg from '@/assets/image/bg-lg.jpg';
 import { Add, Return } from '@/components/icons';
@@ -49,7 +49,7 @@ const Login: FunctionComponent = () => {
       return;
     }
 
-    dispatch(login({ account, password }));
+    dispatch(login(account, password));
   }
 
   return (
@@ -112,6 +112,7 @@ const Login: FunctionComponent = () => {
               className="px-1 w-62 align-middle input"
               value={account}
               onChange={(e) => { setAccount(e.target.value); }}
+              onKeyUp={(e) => e.key === 'Enter' && doLogin()}
             ></input>
           </div>
           <div className="mt-5">
@@ -121,6 +122,7 @@ const Login: FunctionComponent = () => {
               type="password"
               value={password}
               onChange={(e) => { setPassword(e.target.value); }}
+              onKeyUp={(e) => e.key === 'Enter' && doLogin()}
             ></input>
           </div>
           <div className="my-4">

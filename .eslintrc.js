@@ -53,7 +53,11 @@ module.exports = {
         'quotes': ['error', 'single'],
 
         // Function 後的括號不要有空格
-        'space-before-function-paren': ['error', 'never'],
+        'space-before-function-paren': ['error', {
+            anonymous: 'never',
+            named: 'never',
+            asyncArrow: 'always',
+        }],
 
         // 不要有 tab, 用空格取代 tab
         'no-tabs': ['error'],

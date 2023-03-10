@@ -1,31 +1,30 @@
 import { FunctionComponent } from 'react';
+
+import Title from '@/components/Title';
 import Button from '@/components/Button';
 
 const Setting: FunctionComponent = () => {
-  return (
-    <div className="m-2 sm:m-4">
-      <div className="text-2xl font-bold">設定</div>
-      <div className="my-1">
-        <hr></hr>
-        <div className="mt-1 text-xl">修改密碼</div>
-        <div className="mt-2">
-          <span className="inline-block w-28 text-right">舊密碼：</span>
-          <input className="px-1 w-60 align-middle input" type="password"></input>
-        </div>
-        <div className="mt-4">
-          <span className="inline-block w-28 text-right">新密碼：</span>
-          <input className="px-1 w-60 align-middle input" type="password"></input>
-        </div>
-        <div className="mt-4">
-          <span className="inline-block w-28 text-right">確認新密碼：</span>
-          <input className="px-1 w-60 align-middle input" type="password"></input>
-        </div>
-        <div className="mt-4 text-center sm:w-[22rem]">
-          <Button text="確認修改"></Button>
-        </div>
+  return (<>
+    <Title title="設定"></Title>
+    <div className="mb-2">
+      <div className="mt-1 text-xl">修改密碼</div>
+      <div className="mt-2">
+        <span className="inline-block w-28">舊密碼：</span>
+        <input className="px-1 w-56 align-middle input" type="password"></input>
+      </div>
+      <div className="mt-4">
+        <span className="inline-block w-28">新密碼：</span>
+        <input className="px-1 w-56 align-middle input" type="password"></input>
+      </div>
+      <div className="mt-4">
+        <span className="inline-block w-28">確認新密碼：</span>
+        <input className="px-1 w-56 align-middle input" type="password"></input>
+      </div>
+      <div className="mt-4 text-center sm:w-[22rem]">
+        <Button text="確認修改"></Button>
       </div>
     </div>
-  );
+  </>);
 };
 
 export default Setting;

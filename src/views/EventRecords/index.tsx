@@ -2,6 +2,7 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 import { EventType, RepeatEvent } from '@/types/event';
 
+import Title from '@/components/Title';
 import { formatDate } from '@/utils/dateFormat';
 import Button from '@/components/Button';
 import EventAPI from '@/api/event';
@@ -92,15 +93,12 @@ const EventRecords: FunctionComponent = () => {
   }
 
   return (<>
-    <div className="m-2 sm:m-4">
-      <div className="text-2xl font-bold">事件執行紀錄</div>
-      <div className="my-2">
-        <hr></hr>
-        {eventList
-          .sort((event, preEvent) => getEventNextTime(event) < getEventNextTime(preEvent) ? -1 : 1)
-          .map((event) => renderEventRecords(event))
-        }
-      </div>
+    <Title title="事件執行紀錄"></Title>
+    <div className="mb-2">
+      {eventList
+        .sort((event, preEvent) => getEventNextTime(event) < getEventNextTime(preEvent) ? -1 : 1)
+        .map((event) => renderEventRecords(event))
+      }
     </div>
     {addModal ? <EditEvent show={addModal} close={() => { setAddModal(false); }}></EditEvent> : null}
     {editModal && selectedEvent ?

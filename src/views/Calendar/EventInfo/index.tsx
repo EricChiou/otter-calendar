@@ -76,28 +76,29 @@ const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEvent
   const infoClassName = 'h-8 text-lg';
   return (<>
     <div className="text-left">
-      <span className="text-xl">{event.name}</span>
-      <br></br>
-      {formatDate(new Date(event.startTime), 'yyyy-MM-dd hh:mm')}
-      <br></br>
+      <span className="text-2xl">{event.name}</span>
+      <hr></hr>
       <div className={infoClassName}>
-        事件類型： {renderEventType()}
+        開始日期：{formatDate(new Date(event.startTime), 'yyyy-MM-dd hh:mm')}
+      </div>
+      <div className={infoClassName}>
+        事件類型：{renderEventType()}
       </div>
       {event.type === EventType.repeat && originalEvent.type === EventType.repeat ? <>
         <div className={infoClassName}>
-          執行間隔： {`${event.repeatInterval}${renderEventRepeatUnit()}`}
+          執行間隔：{`${event.repeatInterval}${renderEventRepeatUnit()}`}
         </div>
         <div className={infoClassName}>
-          計算方式： {renderEventCalType()}
+          計算方式：{renderEventCalType()}
         </div>
         <div className={infoClassName}>
-          重複次數： {event.repeatTime < 1 ? '永遠重複' : `${event.repeatTime}次`}
+          重複次數：{event.repeatTime < 1 ? '永遠重複' : `${event.repeatTime}次`}
         </div>
         <div className={infoClassName}>
-          最後執行： {renderLastTime()}
+          最後執行：{renderLastTime()}
         </div>
         <div className={infoClassName}>
-          下次執行： {renderNextTime()}&nbsp;
+          下次執行：{renderNextTime()}&nbsp;
           <Button text={'已執行'} click={() => { updateEventLastTime(getEventNextTime(originalEvent)); }}></Button>
         </div>
       </> : null}

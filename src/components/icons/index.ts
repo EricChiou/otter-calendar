@@ -8,5 +8,7 @@ import Setting from './Setting';
 import Add from './Add';
 import Close from './Close';
 import Return from './Return';
+import Sort from './Sort';
+import Food from './Food';
 
-export { Calendar, Note, Login, Logout, Left, Right, Setting, Add, Close, Return };
+export { Calendar, Note, Login, Logout, Left, Right, Setting, Add, Close, Return, Sort, Food };

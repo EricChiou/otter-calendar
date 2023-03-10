@@ -59,7 +59,8 @@ const SideMenu: FunctionComponent<Props> = ({ footer }) => {
         <span className="ml-1 text-xl font-bold text-white align-middle">Otter Calendar</span>
       </span>
       <span
-        className="absolute top-0 right-0 bottom-0 text-white cursor-pointer sm:top-auto sm:bottom-0 sm:p-1 sm:w-full"
+        className="absolute top-0 right-0 bottom-0 p-1 text-white cursor-pointer
+                   sm:top-auto sm:bottom-0 sm:p-1 sm:w-full"
         onClick={() => dispatch(logout())}
       >
         <Logout className="w-full h-full"></Logout>

@@ -116,7 +116,7 @@ const EditEvent: FunctionComponent<Props> = ({ show, event, close, update, add }
         <div className="text-left">
           <div className="mb-3">
             <input
-              className="px-1 w-full input"
+              className="w-full input"
               placeholder="事件名稱"
               value={_event.name}
               onChange={(e) => { setEvent({ ..._event, name: e.target.value }); }}
@@ -190,7 +190,7 @@ const EditEvent: FunctionComponent<Props> = ({ show, event, close, update, add }
           </div>
           <div className="mb-3">
             <input
-              className="px-1 w-full input"
+              className="w-full input"
               placeholder="備註"
               value={_event.remark}
               onChange={(e) => { setEvent({ ..._event, remark: e.target.value }); }}

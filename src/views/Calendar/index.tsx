@@ -166,15 +166,7 @@ const Calendar: FunctionComponent = () => {
   }
 
   return (<>
-    <Title
-      className="mb-2"
-      title="行事曆"
-      extra={
-        <Button className="my-0.5 px-0.5 sm:hidden" click={() => { setAddModal(true); }}>
-          <Add></Add>
-        </Button>
-      }
-    ></Title>
+    <Title className="mb-2" title="行事曆"></Title>
     <div className="mb-2">
       <div className="relative text-center">
         <span
@@ -192,7 +184,7 @@ const Calendar: FunctionComponent = () => {
           onClick={() => { updateDateRange(7 * 86400000); }}>
           <Right></Right>
         </span>
-        <div className="hidden absolute top-0 right-0 sm:block">
+        <div className="absolute top-0 right-0">
           <Button className="px-0.5" click={() => { setAddModal(true); }}><Add></Add></Button>
         </div>
       </div>

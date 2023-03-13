@@ -79,7 +79,7 @@ const Login: FunctionComponent = () => {
           <div className="mt-5">
             <span className="inline-block w-20 text-right align-middle">帳號：</span>
             <input
-              className="px-1 w-62 align-middle input"
+              className="w-62 align-middle input"
               value={account}
               onChange={(e) => { setAccount(e.target.value); }}
             ></input>
@@ -87,7 +87,7 @@ const Login: FunctionComponent = () => {
           <div className="mt-5">
             <span className="inline-block w-20 text-right">密碼：</span>
             <input
-              className="px-1 w-62 align-middle input"
+              className="w-62 align-middle input"
               type="password"
               value={password}
               onChange={(e) => { setPassword(e.target.value); }}
@@ -96,7 +96,7 @@ const Login: FunctionComponent = () => {
           <div className="mt-5">
             <span className="inline-block w-20 text-right">確認密碼：</span>
             <input
-              className="px-1 w-62 align-middle input"
+              className="w-62 align-middle input"
               type="password"
               value={confirmPwd}
               onChange={(e) => { setConfirmPwd(e.target.value); }}
@@ -109,7 +109,7 @@ const Login: FunctionComponent = () => {
           <div className="mt-5">
             <span className="inline-block w-12 text-right align-middle">帳號：</span>
             <input
-              className="px-1 w-62 align-middle input"
+              className="w-62 align-middle input"
               value={account}
               onChange={(e) => { setAccount(e.target.value); }}
               onKeyUp={(e) => e.key === 'Enter' && doLogin()}
@@ -118,7 +118,7 @@ const Login: FunctionComponent = () => {
           <div className="mt-5">
             <span className="inline-block w-12 text-right">密碼：</span>
             <input
-              className="px-1 w-62 align-middle input"
+              className="w-62 align-middle input"
               type="password"
               value={password}
               onChange={(e) => { setPassword(e.target.value); }}

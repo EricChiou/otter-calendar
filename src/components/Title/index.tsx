@@ -9,7 +9,7 @@ interface Props {
 const Modal: FunctionComponent<Props> = ({ className, title, extra }) => {
   return (<>
     <div className={`relative ${className}`}>
-      <div className={`mb-1 text-2xl font-bold ${className}`}>{title}</div>
+      <div className="mb-1 text-2xl font-bold">{title}</div>
       {extra && <div className="absolute top-0 right-0 bottom-0">{extra}</div>}
       <hr></hr>
     </div>

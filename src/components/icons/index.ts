@@ -10,5 +10,8 @@ import Close from './Close';
 import Return from './Return';
 import Sort from './Sort';
 import Food from './Food';
+import Travel from './Travel';
+import Star from './Star';
+import Location from './Location';
 
-export { Calendar, Note, Login, Logout, Left, Right, Setting, Add, Close, Return, Sort, Food };
+export { Calendar, Note, Login, Logout, Left, Right, Setting, Add, Close, Return, Sort, Food, Travel, Star, Location };

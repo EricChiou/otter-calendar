@@ -65,7 +65,7 @@ const routes: RouteObject[] = [
     ],
   },
   {
-    path: Routes.FOOD_NOTE,
+    path: Routes.TRIP_NOTE,
     element: <Main></Main>,
     children: [
       {

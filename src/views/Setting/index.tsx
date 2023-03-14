@@ -5,7 +5,7 @@ import Button from '@/components/Button';
 
 const Setting: FunctionComponent = () => {
   return (<>
-    <Title title="設定"></Title>
+    <Title className="mb-2" title="設定"></Title>
     <div className="mb-2">
       <div className="mt-1 text-xl">修改密碼</div>
       <div className="mt-2">

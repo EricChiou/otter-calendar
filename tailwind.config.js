@@ -10,6 +10,8 @@ module.exports = {
       sm: '600px',
       md: '1240px',
       lg: '1440px',
+      xl: '1680px',
+      '2xl': '1920px',
     },
     colors: {
       // white
@@ -24,6 +26,9 @@ module.exports = {
       // red
       'red': '#f00',
       'red-2': '#d00',
+      'red-3': '#ea4335',
+      // yellow
+      'yellow': '#fbbc04',
       // mask
       'mask': 'rgba(0, 0, 0, 0.1)',
       'mask-2': 'rgba(0, 0, 0, 0.2)',
@@ -36,5 +41,7 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 };

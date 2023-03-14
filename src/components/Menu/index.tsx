@@ -5,7 +5,7 @@ import c from 'classnames';
 
 import Routes from '@/constants/routes';
 import logo from '@/assets/image/logo.png';
-import { Calendar, Note, Setting, Logout, Food } from '@/components/icons';
+import { Calendar, Note, Setting, Logout, Travel } from '@/components/icons';
 import { logout } from '@/store/user.slice';
 
 interface Props {
@@ -24,8 +24,8 @@ const SideMenu: FunctionComponent<Props> = ({ footer }) => {
       route: Routes.EVENT_RECORDS,
     },
     {
-      Icon: Food,
-      route: Routes.FOOD_NOTE,
+      Icon: Travel,
+      route: Routes.TRIP_NOTE,
     },
     {
       Icon: Setting,

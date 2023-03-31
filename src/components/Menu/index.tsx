@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import c from 'classnames';
@@ -12,7 +12,7 @@ interface Props {
   footer?: boolean;
 }
 
-const SideMenu: FunctionComponent<Props> = ({ footer }) => {
+const SideMenu: FC<Props> = ({ footer }) => {
   const dispatch = useDispatch();
   const options = [
     {

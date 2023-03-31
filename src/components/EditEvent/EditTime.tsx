@@ -1,11 +1,11 @@
-import { ChangeEvent, FunctionComponent } from 'react';
+import { ChangeEvent, FC } from 'react';
 
 interface Props {
   time: number;
   onChange(time: number): void;
 }
 
-const EditTime: FunctionComponent<Props> = ({ time, onChange }) => {
+const EditTime: FC<Props> = ({ time, onChange }) => {
 
   function yearOnChange(e: ChangeEvent<HTMLSelectElement>) {
     const date = new Date(time);

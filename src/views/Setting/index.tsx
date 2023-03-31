@@ -1,9 +1,9 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 
 import Title from '@/components/Title';
 import Button from '@/components/Button';
 
-const Setting: FunctionComponent = () => {
+const Setting: FC = () => {
   return (<>
     <Title className="mb-2" title="設定"></Title>
     <div className="mb-2">

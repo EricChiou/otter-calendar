@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 
 import {
   Event,
@@ -22,7 +22,7 @@ interface Props {
   add?(event: Event): void;
 }
 
-const EditEvent: FunctionComponent<Props> = ({ show, event, close, update, add }) => {
+const EditEvent: FC<Props> = ({ show, event, close, update, add }) => {
   const [_event, setEvent] = useState<Event>(event ?
     { ...event } :
     {

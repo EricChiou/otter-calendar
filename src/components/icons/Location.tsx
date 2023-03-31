@@ -1,6 +1,6 @@
-import { FunctionComponent, SVGProps } from 'react';
+import { FC, SVGProps } from 'react';
 
-export const Location: FunctionComponent<SVGProps<SVGSVGElement>> = (props) => {
+export const Location: FC<SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg width="1.5rem" height="1.5rem" viewBox="0 0 24 24" {...props}>
       <path

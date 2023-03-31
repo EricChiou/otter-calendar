@@ -1,4 +1,4 @@
-import { CSSProperties, FunctionComponent, SyntheticEvent, PropsWithChildren } from 'react';
+import { CSSProperties, FC, SyntheticEvent, PropsWithChildren } from 'react';
 
 type Props = {
   className?: string;
@@ -7,7 +7,7 @@ type Props = {
   click?(e: SyntheticEvent): void;
 }
 
-const Button: FunctionComponent<PropsWithChildren<Props>> = ({ children, className, text, style, click }) => {
+const Button: FC<PropsWithChildren<Props>> = ({ children, className, text, style, click }) => {
   return (
     <button
       className={`py-0.5 px-1.5 text-white bg-green active:bg-green-2 ${className}`}

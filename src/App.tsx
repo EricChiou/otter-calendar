@@ -1,4 +1,4 @@
-import { FunctionComponent, useLayoutEffect } from 'react';
+import { FC, useLayoutEffect } from 'react';
 import { useRoutes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -8,7 +8,7 @@ import { setToken } from '@/store/user.slice';
 import CookieKeys from '@/constants/cookie';
 import { injectDispatch } from '@/api/base';
 
-const App: FunctionComponent = () => {
+const App: FC = () => {
   const dispatch = useDispatch();
   const view = useRoutes(routes);
 

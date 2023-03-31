@@ -1,11 +1,11 @@
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 
 import Title from '@/components/Title';
 import { Sort } from '@/components/icons';
 import Button from '@/components/Button';
 import NoteBlock from './NoteBlock';
 
-const TripNote: FunctionComponent = () => {
+const TripNote: FC = () => {
   const sortTypes = [
     {
       value: 'star',
@@ -30,7 +30,11 @@ const TripNote: FunctionComponent = () => {
       <div className="flex flex-wrap">
         {Array(7)
           .fill(NoteBlock)
-          .map((Ele, i) => <div key={i} className={`basis-full ${md} ${lg} ${xl}`}><Ele></Ele></div>)
+          .map((Ele, i) => (
+            <div key={i} className={`basis-full ${md} ${lg} ${xl}`}>
+              <Ele note={{ id: i, star: 3.5 }}></Ele>
+            </div>
+          ))
         }
       </div>
     );
@@ -38,10 +42,10 @@ const TripNote: FunctionComponent = () => {
 
   return (<>
     <Title className="mb-2" title="遊記"></Title>
-    <div className="mb-1">
+    <div className="mb-1.5">
       <div className="hidden sm:inline-block sm:w-2/5">
         <Button
-          className="inline-block w-32 h-[28px] mr-2"
+          className="inline-block w-[132px] h-[28px] mr-1.5"
           click={() => setSortTypeIndex(sortTypes[sortTypeIndex + 1] ? sortTypeIndex + 1 : 0)}
         >
           <Sort className="inline-block align-top"></Sort>
@@ -65,15 +69,17 @@ const TripNote: FunctionComponent = () => {
         </select>
       </div>
     </div>
-    <div className="mb-2 sm:hidden">
-      <Button
-        className="inline-block w-32 h-[28px] mr-1.5"
-        click={() => setSortTypeIndex(sortTypes[sortTypeIndex + 1] ? sortTypeIndex + 1 : 0)}
-      >
-        <Sort className="inline-block align-top"></Sort>
-        {sortTypes[sortTypeIndex].label}
-      </Button>
-      <input className="input w-[calc(100%-8.375rem)]" placeholder="搜尋"></input>
+    <div className="mb-1.5 sm:hidden">
+      <div className="inline-block w-1/3 mr-0.5 pr-1">
+        <Button
+          className="w-full h-[28px]"
+          click={() => setSortTypeIndex(sortTypes[sortTypeIndex + 1] ? sortTypeIndex + 1 : 0)}
+        >
+          <Sort className="inline-block align-top"></Sort>
+          {sortTypes[sortTypeIndex].label}
+        </Button>
+      </div>
+      <input className="input w-[calc(100%*2/3-0.125rem)]" placeholder="搜尋"></input>
     </div>
     {renderNoteList()}
   </>);

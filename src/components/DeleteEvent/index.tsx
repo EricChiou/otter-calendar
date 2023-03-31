@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 
 import Modal from '@/components/Modal';
 import Button from '@/components/Button';
@@ -11,7 +11,7 @@ interface Props {
   close(): void;
 }
 
-const DeleteEvent: FunctionComponent<Props> = ({ show, event, del, close }) => {
+const DeleteEvent: FC<Props> = ({ show, event, del, close }) => {
   return (
     <Modal show={show} title="刪除事件" close={close}>
       <div className="py-2 px-1.5">

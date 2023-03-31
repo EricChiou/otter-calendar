@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 
 import { MessageType } from './index';
 
@@ -10,7 +10,7 @@ interface Props {
   type?: MessageType;
 }
 
-const Message: FunctionComponent<Props> = ({ message, type = MessageType.Info }) => {
+const Message: FC<Props> = ({ message, type = MessageType.Info }) => {
   function getBackgroundColor(): string {
     switch (type) {
       case MessageType.Info:

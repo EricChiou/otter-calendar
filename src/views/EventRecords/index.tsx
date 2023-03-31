@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { EventType, RepeatEvent } from '@/types/event';
 
@@ -10,7 +10,7 @@ import EditEvent from '@/components/EditEvent';
 import DeleteEvent from '@/components/DeleteEvent';
 import { getEventNextTime } from '@/services/event';
 
-const EventRecords: FunctionComponent = () => {
+const EventRecords: FC = () => {
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);

@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 
 import { Event, EventType, EventRepeatUnit, RepeatEvent } from '@/types/event';
 
@@ -17,7 +17,7 @@ export enum ShowType {
   year,
 }
 
-const Calendar: FunctionComponent = () => {
+const Calendar: FC = () => {
   const [addModal, setAddModal] = useState(false);
   const [showType, setShowType] = useState(ShowType.week);
   const [dateRange, setDateRange] = useState({ startTime: 0, endTime: 0 });

@@ -1,9 +1,9 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Menu from '@/components/Menu';
 
-const Main: FunctionComponent = () => {
+const Main: FC = () => {
   return (
     <div className="sm:flex sm:flex-nowrap sm:justify-start">
       <div className="h-8 sm:w-12 sm:h-[100vh]"><Menu></Menu></div>

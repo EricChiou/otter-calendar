@@ -1,6 +1,6 @@
-import { FunctionComponent, SVGProps } from 'react';
+import { FC, SVGProps } from 'react';
 
-const Calendar: FunctionComponent<SVGProps<SVGSVGElement>> = (props) => {
+const Calendar: FC<SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg width="1.5rem" height="1.5rem" viewBox="0 0 24 24" {...props}>
       <path

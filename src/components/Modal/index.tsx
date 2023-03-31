@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
 import { Close } from '@/components/icons';
 import Button from '@/components/Button';
@@ -9,7 +9,7 @@ interface Props {
   close?(): void;
 }
 
-const Modal: FunctionComponent<PropsWithChildren<Props>> = ({ children, show, title, close }) => {
+const Modal: FC<PropsWithChildren<Props>> = ({ children, show, title, close }) => {
   return (<>{show ?
     <div className="fixed top-0 right-0 bottom-0 left-0 text-center bg-mask-3 z-50">
       <div className="inline-block h-[100%] align-middle"></div>

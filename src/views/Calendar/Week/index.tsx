@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 
 import { Event, EventType } from '@/types/event';
 
@@ -11,7 +11,7 @@ interface Props {
   selected(event: Event): void;
 }
 
-const Week: FunctionComponent<Props> = ({
+const Week: FC<Props> = ({
   dateRange,
   eventList,
   selected,

@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { EventType, EventRepeatUnit, Event, EventCalType } from '@/types/event';
 
@@ -16,7 +16,7 @@ interface Props {
   del(event: Event): void;
 }
 
-const EventInfo: FunctionComponent<Props> = ({ originalEvent, event, updateEventLastTime, update, del }) => {
+const EventInfo: FC<Props> = ({ originalEvent, event, updateEventLastTime, update, del }) => {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 

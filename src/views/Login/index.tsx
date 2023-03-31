@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 
 import Button from '@/components/Button';
 import { login } from '@/store/user.slice';
@@ -10,7 +10,7 @@ import { Add, Return } from '@/components/icons';
 import Message from '@/components/Message';
 import UserAPI from '@/api/user';
 
-const Login: FunctionComponent = () => {
+const Login: FC = () => {
   const dispatch = useDispatch();
   const [showSignUp, setShowSignUp] = useState(false);
   const [account, setAccount] = useState('');
@@ -65,13 +65,17 @@ const Login: FunctionComponent = () => {
             <span className="inline-block ml-1 align-middle">Otter Calendar</span>
           </span>
           <span className="float-right">
-            {showSignUp ?
-              <Button className="bg-green-2 hover:bg-green" click={() => { resetData(); setShowSignUp(false); }}>
-                <Return width="28px" height="36px"></Return>
-              </Button> :
-              <Button className="bg-green-2 hover:bg-green" click={() => { resetData(); setShowSignUp(true); }}>
-                <Add width="28px" height="36px"></Add>
-              </Button>
+            {showSignUp
+              ? (
+                <Button className="bg-green-2 hover:bg-green" click={() => { resetData(); setShowSignUp(false); }}>
+                  <Return width="28px" height="36px"></Return>
+                </Button>
+              )
+              : (
+                <Button className="bg-green-2 hover:bg-green" click={() => { resetData(); setShowSignUp(true); }}>
+                  <Add width="28px" height="36px"></Add>
+                </Button>
+              )
             }
           </span>
         </div>

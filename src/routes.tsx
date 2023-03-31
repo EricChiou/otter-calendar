@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useEffect, PropsWithChildren } from 'react';
+import { FC, ReactNode, useEffect, PropsWithChildren } from 'react';
 import { RouteObject, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -12,9 +12,10 @@ import Login from '@/views/Login';
 import Calendar from '@/views/Calendar';
 import EventRecords from '@/views/EventRecords';
 import TripNote from '@/views/TripNote';
+import NoteDetail from '@/views/TripNote/NoteDetail';
 import Setting from '@/views/Setting';
 
-export const InterceptorRouter: FunctionComponent<PropsWithChildren> = ({ children }) => {
+export const InterceptorRouter: FC<PropsWithChildren> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
@@ -71,6 +72,16 @@ const routes: RouteObject[] = [
       {
         index: true,
         element: <TripNote></TripNote>,
+      },
+    ],
+  },
+  {
+    path: Routes.TRIP_NOTE_DETAIL_$ID,
+    element: <Main></Main>,
+    children: [
+      {
+        index: true,
+        element: <NoteDetail></NoteDetail>,
       },
     ],
   },

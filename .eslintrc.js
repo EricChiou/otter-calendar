@@ -41,7 +41,7 @@ module.exports = {
         'no-param-reassign': ['error', { 'props': false }],
 
         // 換行時將操作符放在行末
-        'operator-linebreak': ['error', 'before'],
+        'operator-linebreak': ['error', 'after'],
 
         // 行末加上分號
         'semi': ['error', 'always'],

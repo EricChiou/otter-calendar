@@ -1,10 +1,13 @@
-import { FC, ReactNode, useEffect, PropsWithChildren } from 'react';
-import { RouteObject, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { FC, ReactNode, useEffect, useLayoutEffect } from 'react';
+import { RouteObject, Navigate, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectUser, setPrevPath } from '@/store/user.slice';
+import { selectUser, setPrevPath, setToken } from '@/store/user.slice';
+import { injectDispatch } from '@/api/base';
 
 import Routes from '@/constants/routes';
+import CookieKeys from '@/constants/cookie';
+import Cookie from '@/utils/cookie';
 
 import Main from '@/layout/Main';
 
@@ -15,11 +18,17 @@ import TripNote from '@/views/TripNote';
 import NoteDetail from '@/views/TripNote/NoteDetail';
 import Setting from '@/views/Setting';
 
-export const InterceptorRouter: FC<PropsWithChildren> = ({ children }) => {
+export const InterceptorRouter: FC = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    injectDispatch(dispatch);
+    const token = Cookie.Get(CookieKeys.TOKEN);
+    if (token) { dispatch(setToken(token)); }
+  }, []);
 
   useEffect(() => {
     if (!user.login && location.pathname !== Routes.LOGIN) {
@@ -32,8 +41,8 @@ export const InterceptorRouter: FC<PropsWithChildren> = ({ children }) => {
   }, [location, user]);
 
   function renderView(): ReactNode {
-    if (user.login && location.pathname !== Routes.LOGIN) { return children; }
-    if (!user.login && location.pathname === Routes.LOGIN) { return children; }
+    if (user.login && location.pathname !== Routes.LOGIN) { return <Outlet></Outlet>; }
+    if (!user.login && location.pathname === Routes.LOGIN) { return <Outlet></Outlet>; }
     return null;
   }
 
@@ -42,62 +51,48 @@ export const InterceptorRouter: FC<PropsWithChildren> = ({ children }) => {
 
 const routes: RouteObject[] = [
   {
-    path: Routes.LOGIN,
-    element: <Login></Login>,
-  },
-  {
-    path: Routes.CALENDAR,
-    element: <Main></Main>,
+    element: <InterceptorRouter></InterceptorRouter>,
     children: [
       {
-        index: true,
-        element: <Calendar></Calendar>,
+        element: <Main></Main>,
+        children: [
+          {
+            id: Routes.CALENDAR,
+            path: Routes.CALENDAR,
+            element: <Calendar></Calendar>,
+          },
+          {
+            id: Routes.EVENT_RECORDS,
+            path: Routes.EVENT_RECORDS,
+            element: <EventRecords></EventRecords>,
+          },
+          {
+            id: Routes.TRIP_NOTE,
+            path: Routes.TRIP_NOTE,
+            element: <TripNote></TripNote>,
+          },
+          {
+            id: Routes.TRIP_NOTE_DETAIL_$ID,
+            path: Routes.TRIP_NOTE_DETAIL_$ID,
+            element: <NoteDetail></NoteDetail>,
+          },
+          {
+            id: Routes.SETTING,
+            path: Routes.SETTING,
+            element: <Setting></Setting>,
+          },
+        ],
       },
-    ],
-  },
-  {
-    path: Routes.EVENT_RECORDS,
-    element: <Main></Main>,
-    children: [
       {
-        index: true,
-        element: <EventRecords></EventRecords>,
+        id: Routes.LOGIN,
+        path: Routes.LOGIN,
+        element: <Login></Login>,
       },
-    ],
-  },
-  {
-    path: Routes.TRIP_NOTE,
-    element: <Main></Main>,
-    children: [
       {
-        index: true,
-        element: <TripNote></TripNote>,
+        path: '*',
+        element: <Navigate to={Routes.CALENDAR}></Navigate>,
       },
     ],
-  },
-  {
-    path: Routes.TRIP_NOTE_DETAIL_$ID,
-    element: <Main></Main>,
-    children: [
-      {
-        index: true,
-        element: <NoteDetail></NoteDetail>,
-      },
-    ],
-  },
-  {
-    path: Routes.SETTING,
-    element: <Main></Main>,
-    children: [
-      {
-        index: true,
-        element: <Setting></Setting>,
-      },
-    ],
-  },
-  {
-    path: '*',
-    element: <Navigate to={Routes.CALENDAR}></Navigate>,
   },
 ];
 

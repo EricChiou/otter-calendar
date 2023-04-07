@@ -13,5 +13,23 @@ import Food from './Food';
 import Travel from './Travel';
 import Star from './Star';
 import Location from './Location';
+import Edit from './Edit';
 
-export { Calendar, Note, Login, Logout, Left, Right, Setting, Add, Close, Return, Sort, Food, Travel, Star, Location };
+export {
+  Calendar,
+  Note,
+  Login,
+  Logout,
+  Left,
+  Right,
+  Setting,
+  Add,
+  Close,
+  Return,
+  Sort,
+  Food,
+  Travel,
+  Star,
+  Location,
+  Edit,
+};

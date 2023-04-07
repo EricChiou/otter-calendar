@@ -1,7 +1,7 @@
 import { FC, ReactNode, PropsWithChildren, Children, isValidElement } from 'react';
 
 interface Props extends PropsWithChildren {
-  title: string;
+  title: string | ReactNode;
   className?: string;
   extra?: ReactNode;
 }

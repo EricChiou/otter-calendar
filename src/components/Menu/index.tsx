@@ -1,5 +1,5 @@
 import { FC, SVGProps } from 'react';
-import { useLocation, useNavigate, useMatches } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import c from 'classnames';
 
@@ -15,12 +15,10 @@ interface Props {
 interface Option {
   Icon: FC<SVGProps<SVGSVGElement>>;
   route: string;
-  routes?: string[];
 }
 
 const SideMenu: FC<Props> = ({ footer }) => {
   const dispatch = useDispatch();
-  const matches = useMatches();
   const location = useLocation();
   const navigate = useNavigate();
   const options: Option[] = [
@@ -35,25 +33,12 @@ const SideMenu: FC<Props> = ({ footer }) => {
     {
       Icon: Travel,
       route: Routes.TRIP_NOTE,
-      routes: [Routes.TRIP_NOTE, Routes.TRIP_NOTE_DETAIL_$ID],
     },
     {
       Icon: Setting,
       route: Routes.SETTING,
     },
   ];
-
-  function enableOption(option: Option): boolean {
-    if (location.pathname === option.route) {
-      return true;
-    }
-    const id = matches.pop()?.id;
-    if (option.routes && id) {
-      console.log(matches, option.routes);
-      return option.routes.includes(id);
-    }
-    return false;
-  }
 
   return footer ?
     <div className="h-full bg-green">
@@ -62,7 +47,7 @@ const SideMenu: FC<Props> = ({ footer }) => {
           <div
             className={c(
               'h-full text-center cursor-pointer',
-              { 'bg-mask': enableOption(option) },
+              { 'bg-mask': location.pathname.includes(option.route) },
             )}
             onClick={() => navigate(option.route)}
           >
@@ -90,7 +75,7 @@ const SideMenu: FC<Props> = ({ footer }) => {
           <div
             className={c(
               'inline-block w-full p-1 cursor-pointer hover:bg-mask active:bg-mask-2',
-              { 'bg-mask': enableOption(option) },
+              { 'bg-mask': location.pathname.includes(option.route) },
             )}
             onClick={() => navigate(option.route)}
           >

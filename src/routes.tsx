@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect, useLayoutEffect } from 'react';
-import { RouteObject, Navigate, useLocation, useNavigate, Outlet } from 'react-router-dom';
+import { RouteObject, Navigate, useLocation, useNavigate, Outlet, createBrowserRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { selectUser, setPrevPath, setToken } from '@/store/user.slice';
@@ -51,49 +51,41 @@ export const InterceptorRouter: FC = () => {
 
 const routes: RouteObject[] = [
   {
-    element: <InterceptorRouter></InterceptorRouter>,
+    element: <Main></Main>,
     children: [
       {
-        element: <Main></Main>,
-        children: [
-          {
-            id: Routes.CALENDAR,
-            path: Routes.CALENDAR,
-            element: <Calendar></Calendar>,
-          },
-          {
-            id: Routes.EVENT_RECORDS,
-            path: Routes.EVENT_RECORDS,
-            element: <EventRecords></EventRecords>,
-          },
-          {
-            id: Routes.TRIP_NOTE,
-            path: Routes.TRIP_NOTE,
-            element: <TripNote></TripNote>,
-          },
-          {
-            id: Routes.TRIP_NOTE_DETAIL_$ID,
-            path: Routes.TRIP_NOTE_DETAIL_$ID,
-            element: <NoteDetail></NoteDetail>,
-          },
-          {
-            id: Routes.SETTING,
-            path: Routes.SETTING,
-            element: <Setting></Setting>,
-          },
-        ],
+        path: Routes.CALENDAR,
+        element: <Calendar></Calendar>,
       },
       {
-        id: Routes.LOGIN,
-        path: Routes.LOGIN,
-        element: <Login></Login>,
+        path: Routes.EVENT_RECORDS,
+        element: <EventRecords></EventRecords>,
       },
       {
-        path: '*',
-        element: <Navigate to={Routes.CALENDAR}></Navigate>,
+        path: Routes.TRIP_NOTE,
+        element: <TripNote></TripNote>,
+      },
+      {
+        path: Routes.TRIP_NOTE_DETAIL_$ID,
+        element: <NoteDetail></NoteDetail>,
+      },
+      {
+        path: Routes.SETTING,
+        element: <Setting></Setting>,
       },
     ],
   },
+  {
+    path: Routes.LOGIN,
+    element: <Login></Login>,
+  },
+  {
+    path: '*',
+    element: <Navigate to={Routes.CALENDAR}></Navigate>,
+  },
 ];
 
-export default routes;
+export default createBrowserRouter([{
+  element: <InterceptorRouter></InterceptorRouter>,
+  children: routes,
+}]);
